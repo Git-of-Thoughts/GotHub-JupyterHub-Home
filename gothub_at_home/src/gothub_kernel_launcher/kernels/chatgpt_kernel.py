@@ -81,20 +81,36 @@ class ChatGptKernel(Kernel):
                         stream_content,
                     )
 
-            # except openai.error.OpenAIError as err:
-            #     pass
-
-            except Exception as err:
+            except openai.error.AuthenticationError:
                 exec_config = {
-                    "limit": 0,
-                    "chain": False,
+                    # "limit": 0,
+                    # "chain": False,
+                }
+                tb = traceback.format_exc(
+                    **exec_config,
+                )
+                msg = "Try restarting the kernel."
+                stream_content = {
+                    "name": "stderr",
+                    "text": f"{tb}\n{msg}",
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "stream",
+                    stream_content,
+                )
+
+            except Exception:
+                exec_config = {
+                    # "limit": 0,
+                    # "chain": False,
                 }
                 tb = traceback.format_exc(
                     **exec_config,
                 )
                 stream_content = {
                     "name": "stderr",
-                    "text": f"{tb}\n{err}",
+                    "text": f"{tb}",
                 }
                 self.send_response(
                     self.iopub_socket,
