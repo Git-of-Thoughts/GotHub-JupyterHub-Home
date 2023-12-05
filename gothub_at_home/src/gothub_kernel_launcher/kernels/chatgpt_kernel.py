@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import openai
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from ipykernel.kernelbase import Kernel
 
 # Model
@@ -13,7 +13,8 @@ DEFAULT_SYSTEM_PROMPT = """\
 # Home directory of the user
 HOME_PATH = Path.home()
 DOTENV_PATH = HOME_PATH / "_keys"
-load_dotenv(DOTENV_PATH)
+DOTENV_VALUES = dotenv_values(DOTENV_PATH)
+openai.api_key = DOTENV_VALUES["OPENAI_API_KEY"]
 
 
 class ChatGptKernel(Kernel):
