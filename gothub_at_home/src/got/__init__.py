@@ -38,7 +38,7 @@ def ask(
         stream=True,
     )
 
-    print(f"ChatGPT {model}:\n")
+    print(f"ChatGPT {model}:")
 
     all_outputs = []
     for res in response:
@@ -52,6 +52,6 @@ def ask(
         all_outputs.append(output)
 
         print(output, end="")
-    print("\n")
+    print("")
 
     return "".join(all_outputs)
