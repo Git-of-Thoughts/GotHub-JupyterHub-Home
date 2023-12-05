@@ -4,6 +4,7 @@ from pathlib import Path
 
 import openai
 from dotenv import dotenv_values
+from ipykernel.ipkernel import IPythonKernel
 from ipykernel.kernelbase import Kernel
 
 # Model
@@ -37,6 +38,10 @@ class ChatGptKernel(Kernel):
         "file_extension": ".py",
     }
     banner = "ChatGPT Kernel"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.code_kernel = IPythonKernel()
 
     def do_execute(
         self,
@@ -84,7 +89,7 @@ class ChatGptKernel(Kernel):
             except openai.error.AuthenticationError:
                 exec_config = {
                     # "limit": 0,
-                    # "chain": False,
+                    "chain": False,
                 }
                 tb = traceback.format_exc(
                     **exec_config,
@@ -103,7 +108,7 @@ class ChatGptKernel(Kernel):
             except Exception:
                 exec_config = {
                     # "limit": 0,
-                    # "chain": False,
+                    "chain": False,
                 }
                 tb = traceback.format_exc(
                     **exec_config,
