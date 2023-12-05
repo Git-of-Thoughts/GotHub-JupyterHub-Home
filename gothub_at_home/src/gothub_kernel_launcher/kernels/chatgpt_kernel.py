@@ -49,9 +49,9 @@ class ChatGptKernel(IPythonKernel):
     ):
         as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
-        match = re.match(as_code_regex, code)
-        if match:
-            code = code[match.end() :]
+        as_code_match = re.match(as_code_regex, code)
+        if as_code_match:
+            code = code[as_code_match.end() :]
             return super().do_execute(
                 code,
                 silent,
