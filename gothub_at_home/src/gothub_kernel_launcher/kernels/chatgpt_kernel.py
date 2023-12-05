@@ -59,8 +59,8 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
-        set_gpt_3_5_regex = r"^\s*set\s+(|gpt|gpt-)3.5\s*"
-        set_gpt_4_regex = r"^\s*set\s+(|gpt|gpt-)4\s*"
+        set_gpt_3_5_regex = r"^\s*set\s+(gpt|gpt-)3.5\s*"
+        set_gpt_4_regex = r"^\s*set\s+(gpt|gpt-)4\s*"
 
         global DEFAULT_MODEL
 
