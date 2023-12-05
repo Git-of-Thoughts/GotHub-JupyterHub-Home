@@ -98,7 +98,7 @@ class ChatGptKernel(IPythonKernel):
 
             except openai.error.AuthenticationError as e:
                 return super().do_execute(
-                    f"raise {e}",
+                    f"raise Exception({e})",
                     silent,
                     store_history,
                     user_expressions,
@@ -107,7 +107,7 @@ class ChatGptKernel(IPythonKernel):
 
             except Exception as e:
                 return super().do_execute(
-                    f"raise {e}",
+                    f"raise Exception({e})",
                     silent,
                     store_history,
                     user_expressions,
