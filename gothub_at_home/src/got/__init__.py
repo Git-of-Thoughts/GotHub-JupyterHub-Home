@@ -1,5 +1,7 @@
 import openai
 
+from .utils import bold
+
 OPENAI_MODEL = "gpt-4"
 
 
@@ -38,7 +40,7 @@ def ask(
         stream=True,
     )
 
-    print(f"ChatGPT {model}:")
+    print(bold(f"ChatGPT {model}:"))
 
     all_outputs = []
     for res in response:

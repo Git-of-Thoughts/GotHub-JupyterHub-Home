@@ -94,7 +94,7 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"<h1>ChatGPT {model}:</h1>",
+                        "text/html": f"<b>ChatGPT {model}:</b>",
                     },
                 }
                 self.send_response(
