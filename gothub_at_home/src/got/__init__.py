@@ -44,7 +44,7 @@ def ask(
             ]
         )
 
-        print(output)
+        print(output, end="")
 
         all_outputs.append(output)
 
