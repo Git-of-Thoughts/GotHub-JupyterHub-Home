@@ -1,6 +1,5 @@
 import re
 import sys
-import traceback
 from pathlib import Path
 
 import openai
