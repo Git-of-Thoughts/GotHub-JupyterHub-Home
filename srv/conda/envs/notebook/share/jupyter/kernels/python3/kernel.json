@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "GotHub Python 3",
+    "display_name": "ChatGPT",
     "language": "python",
     "metadata": {
         "debugger": true
