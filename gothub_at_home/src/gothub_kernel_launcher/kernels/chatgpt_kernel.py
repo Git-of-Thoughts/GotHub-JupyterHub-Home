@@ -1,4 +1,5 @@
 import sys
+import traceback
 from pathlib import Path
 
 import openai
@@ -80,10 +81,20 @@ class ChatGptKernel(Kernel):
                         stream_content,
                     )
 
+            # except openai.error.OpenAIError as err:
+            #     pass
+
             except Exception as err:
+                exec_config = {
+                    "limit": 0,
+                    "chain": False,
+                }
+                tb = traceback.format_exc(
+                    **exec_config,
+                )
                 stream_content = {
                     "name": "stderr",
-                    "text": f"{err}",
+                    "text": f"{tb}\n{err}",
                 }
                 self.send_response(
                     self.iopub_socket,
