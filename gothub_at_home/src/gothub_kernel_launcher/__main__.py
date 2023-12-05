@@ -10,7 +10,7 @@ import sys
 
 from ipykernel.kernelapp import IPKernelApp
 
-from .kernels.echo_kernel import EchoKernel
+from .kernels.chatgpt_kernel import ChatGptKernel
 
 if __name__ == "__main__":
     # Remove the CWD from sys.path while we load stuff.
@@ -19,5 +19,5 @@ if __name__ == "__main__":
         del sys.path[0]
 
     IPKernelApp.launch_instance(
-        kernel_class=EchoKernel,
+        kernel_class=ChatGptKernel,
     )
