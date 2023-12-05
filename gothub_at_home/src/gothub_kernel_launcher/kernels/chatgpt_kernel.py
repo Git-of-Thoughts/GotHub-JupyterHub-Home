@@ -92,7 +92,7 @@ class ChatGptKernel(IPythonKernel):
 
                 # Make it colorful
                 stream_content = {
-                    "name": "stdout",
+                    "name": "stderr",
                     "text": f"ChatGPT {model}:\n",
                 }
                 self.send_response(
