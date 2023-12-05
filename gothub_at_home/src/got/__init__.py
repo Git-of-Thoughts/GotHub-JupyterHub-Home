@@ -8,7 +8,7 @@ def ask(
     *,
     system_prompt: str = "",
     prompt: str = "",
-    model: str = str(OPENAI_MODEL),
+    model: str | None = None,
 ) -> str:
     if not any([question, system_prompt, prompt]):
         raise ValueError(
@@ -19,6 +19,9 @@ def ask(
         raise ValueError("Only one of question or prompt can be provided")
 
     user_prompt = question or prompt
+
+    if model is None:
+        model = OPENAI_MODEL
 
     response = openai.ChatCompletion.create(
         model=model,
