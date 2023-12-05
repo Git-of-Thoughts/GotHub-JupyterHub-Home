@@ -5,7 +5,7 @@ from .utils import bold
 OPENAI_MODEL = "gpt-4"
 
 
-def ask(
+def _ask(
     question: str = "",
     *,
     system_prompt: str = "",
@@ -57,3 +57,25 @@ def ask(
     print("\n")
 
     return "".join(all_outputs)
+
+
+def ask(
+    question: str = "",
+    *,
+    system_prompt: str = "",
+    prompt: str = "",
+    model: str | None = None,
+) -> str:
+    try:
+        result = _ask(
+            question=question,
+            system_prompt=system_prompt,
+            prompt=prompt,
+            model=model,
+        )
+
+    except openai.error.AuthenticationError as e:
+        msg = "Please set OPENAI_API_KEY in $HOME/__keys__, and restart the kernel."
+        raise openai.error.AuthenticationError(msg) from e
+
+    return result
