@@ -2,7 +2,7 @@
     "argv": [
         "/srv/conda/envs/notebook/bin/python",
         "-m",
-        "ipykernel_launcher",
+        "gothub_kernel_launcher",
         "-f",
         "{connection_file}"
     ],
