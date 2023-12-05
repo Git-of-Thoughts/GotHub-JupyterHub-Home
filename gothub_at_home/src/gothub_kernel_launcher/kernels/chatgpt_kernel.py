@@ -13,6 +13,9 @@ DEFAULT_SYSTEM_PROMPT = """\
 """
 
 
+model = DEFAULT_MODEL
+
+
 # Home directory of the user
 HOME_PATH = Path.home()
 DOTENV_PATH = HOME_PATH / "__keys__"
@@ -71,29 +74,33 @@ class ChatGptKernel(IPythonKernel):
         with_gpt_3_5_regex = r"^\s*with\s+(gpt|gpt-)3.5\s*"
         with_gpt_4_regex = r"^\s*with\s+(gpt|gpt-)4\s*"
 
-        model = DEFAULT_MODEL
+        global model
 
         if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
             code = code[with_gpt_3_5_match.end() :]
             model = "gpt-3.5-turbo"
-            return self.do_execute(
+            result = self.do_execute(
                 code,
                 silent,
                 store_history,
                 user_expressions,
                 allow_stdin,
             )
+            model = DEFAULT_MODEL
+            return result
 
         if with_gpt_4_match := re.match(with_gpt_4_regex, code):
             code = code[with_gpt_4_match.end() :]
             model = "gpt-4"
-            return self.do_execute(
+            result = self.do_execute(
                 code,
                 silent,
                 store_history,
                 user_expressions,
                 allow_stdin,
             )
+            model = DEFAULT_MODEL
+            return result
 
         if not silent:
             try:
