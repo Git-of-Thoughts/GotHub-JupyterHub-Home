@@ -8,7 +8,7 @@ def ask(
     *,
     system_prompt: str = "",
     prompt: str = "",
-    model: str = OPENAI_MODEL,
+    model: str = str(OPENAI_MODEL),
 ) -> str:
     if not any([question, system_prompt, prompt]):
         raise ValueError(
