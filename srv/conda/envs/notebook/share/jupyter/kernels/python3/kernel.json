@@ -1,0 +1,14 @@
+{
+    "argv": [
+        "/srv/conda/envs/notebook/bin/python",
+        "-m",
+        "ipykernel_launcher",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "GotHub Python 3",
+    "language": "python",
+    "metadata": {
+        "debugger": true
+    }
+}
