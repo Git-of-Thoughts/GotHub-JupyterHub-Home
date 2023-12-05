@@ -92,12 +92,12 @@ class ChatGptKernel(IPythonKernel):
 
                 # Make it colorful
                 stream_content = {
-                    "name": "stderr",
-                    "text": f"ChatGPT {model}:\n",
+                    "metadata": {},
+                    "data": f"text/html: <h1>ChatGPT {model}:</h1>",
                 }
                 self.send_response(
                     self.iopub_socket,
-                    "stream",
+                    "display_data",
                     stream_content,
                 )
 
