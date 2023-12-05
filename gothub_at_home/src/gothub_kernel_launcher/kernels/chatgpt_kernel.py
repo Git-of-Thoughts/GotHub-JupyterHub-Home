@@ -97,8 +97,13 @@ class ChatGptKernel(IPythonKernel):
                     )
 
             except openai.error.AuthenticationError as e:
+                msg = (
+                    "\n"
+                    "Please set OPENAI_API_KEY in $HOME/__keys__, "
+                    "and restart the kernel."
+                )
                 return super().do_execute(
-                    f"raise Exception({repr(repr(e))})",
+                    f"raise Exception({repr(repr(e))} + {repr(msg)})",
                     silent,
                     store_history,
                     user_expressions,
