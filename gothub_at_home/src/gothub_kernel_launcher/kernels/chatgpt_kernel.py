@@ -98,7 +98,7 @@ class ChatGptKernel(IPythonKernel):
 
             except openai.error.AuthenticationError as e:
                 msg = (
-                    "\n"
+                    "\n\n"
                     "Please set OPENAI_API_KEY in $HOME/__keys__, "
                     "and restart the kernel."
                 )
