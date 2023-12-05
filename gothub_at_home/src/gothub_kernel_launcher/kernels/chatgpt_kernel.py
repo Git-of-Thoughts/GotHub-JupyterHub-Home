@@ -43,7 +43,8 @@ class ChatGptKernel(Kernel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.code_kernel = IPythonKernel()
-        self.code_kernel.iopub_socket = self.iopub_socket
+        self.code_kernel.shell.displayhook.pub_socket = self.iopub_socket
+        self.code_kernel.shell.display_pub.pub_socket = self.iopub_socket
 
     def do_execute(
         self,
@@ -101,7 +102,7 @@ class ChatGptKernel(Kernel):
                         stream_content,
                     )
 
-            except openai.error.AuthenticationError:
+            except openai.error.AuthenticationError as e:
                 tb = traceback.format_exc(
                     limit=0,
                     chain=False,
@@ -116,6 +117,32 @@ class ChatGptKernel(Kernel):
                     "stream",
                     stream_content,
                 )
+
+                # invoke IPython traceback formatting
+                shell = self.shell
+                shell.showtraceback()
+                reply_content = {
+                    "traceback": shell._last_traceback or [],
+                    "ename": str(type(e).__name__),
+                    "evalue": str(e),
+                }
+                # FIXME: deprecated piece for ipyparallel (remove in 5.0):
+                e_info = dict(
+                    engine_uuid=self.ident, engine_id=self.int_id, method="apply"
+                )
+                reply_content["engine_info"] = e_info
+
+                self.send_response(
+                    self.iopub_socket,
+                    "error",
+                    reply_content,
+                    ident=self._topic("error"),
+                )
+                self.log.info(
+                    "Exception in apply request:\n%s",
+                    "\n".join(reply_content["traceback"]),
+                )
+                reply_content["status"] = "error"
 
             except Exception:
                 tb = traceback.format_exc(
