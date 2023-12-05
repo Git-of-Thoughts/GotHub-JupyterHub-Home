@@ -96,35 +96,22 @@ class ChatGptKernel(IPythonKernel):
                         stream_content,
                     )
 
-            except openai.error.AuthenticationError:
-                tb = traceback.format_exc(
-                    limit=0,
-                    chain=False,
-                )
-                msg = "Try restarting the kernel."
-                stream_content = {
-                    "name": "stderr",
-                    "text": f"{tb}\n{msg}",
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "stream",
-                    stream_content,
+            except openai.error.AuthenticationError as e:
+                return super().do_execute(
+                    f"raise {e}",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
                 )
 
-            except Exception:
-                tb = traceback.format_exc(
-                    limit=0,
-                    chain=False,
-                )
-                stream_content = {
-                    "name": "stderr",
-                    "text": f"{tb}",
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "stream",
-                    stream_content,
+            except Exception as e:
+                return super().do_execute(
+                    f"raise {e}",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
                 )
 
         return {
