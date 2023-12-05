@@ -59,28 +59,30 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
-        set_gpt_3_5_regex = r"^\s*set\s+(|gpt|gpt-)3.5\s*$"
-        set_gpt_4_regex = r"^\s*set\s+(|gpt|gpt-)4\s*$"
+        set_gpt_3_5_regex = r"^\s*set\s+(|gpt|gpt-)3.5\s*"
+        set_gpt_4_regex = r"^\s*set\s+(|gpt|gpt-)4\s*"
 
-        if re.match(set_gpt_3_5_regex, code):
+        if set_gpt_3_5_match := re.match(set_gpt_3_5_regex, code):
+            code = code[set_gpt_3_5_match.end() :]
             DEFAULT_MODEL = "gpt-3.5-turbo"
-            return {
-                "status": "ok",
-                # The base class increments the execution count
-                "execution_count": self.execution_count,
-                "payload": [],
-                "user_expressions": {},
-            }
+            return self.do_execute(
+                code,
+                silent,
+                store_history,
+                user_expressions,
+                allow_stdin,
+            )
 
-        if re.match(set_gpt_4_regex, code):
+        if set_gpt_4_match := re.match(set_gpt_4_regex, code):
+            code = code[set_gpt_4_match.end() :]
             DEFAULT_MODEL = "gpt-4"
-            return {
-                "status": "ok",
-                # The base class increments the execution count
-                "execution_count": self.execution_count,
-                "payload": [],
-                "user_expressions": {},
-            }
+            return self.do_execute(
+                code,
+                silent,
+                store_history,
+                user_expressions,
+                allow_stdin,
+            )
 
         if not silent:
             try:
