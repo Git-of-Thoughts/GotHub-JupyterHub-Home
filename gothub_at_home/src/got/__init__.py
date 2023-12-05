@@ -52,6 +52,6 @@ def ask(
         all_outputs.append(output)
 
         print(output, end="")
-    print("")
+    print("\n")
 
     return "".join(all_outputs)
