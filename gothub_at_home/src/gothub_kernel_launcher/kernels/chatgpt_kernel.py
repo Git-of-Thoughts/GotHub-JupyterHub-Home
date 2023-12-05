@@ -49,8 +49,7 @@ class ChatGptKernel(IPythonKernel):
     ):
         as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
-        as_code_match = re.match(as_code_regex, code)
-        if as_code_match:
+        if as_code_match := re.match(as_code_regex, code):
             code = code[as_code_match.end() :]
             return super().do_execute(
                 code,
@@ -59,6 +58,29 @@ class ChatGptKernel(IPythonKernel):
                 user_expressions,
                 allow_stdin,
             )
+
+        set_gpt_3_5_regex = r"^\s*set\s+(|gpt|gpt-)3.5\s*$"
+        set_gpt_4_regex = r"^\s*set\s+(|gpt|gpt-)4\s*$"
+
+        if re.match(set_gpt_3_5_regex, code):
+            DEFAULT_MODEL = "gpt-3.5-turbo"
+            return {
+                "status": "ok",
+                # The base class increments the execution count
+                "execution_count": self.execution_count,
+                "payload": [],
+                "user_expressions": {},
+            }
+
+        if re.match(set_gpt_4_regex, code):
+            DEFAULT_MODEL = "gpt-4"
+            return {
+                "status": "ok",
+                # The base class increments the execution count
+                "execution_count": self.execution_count,
+                "payload": [],
+                "user_expressions": {},
+            }
 
         if not silent:
             try:
