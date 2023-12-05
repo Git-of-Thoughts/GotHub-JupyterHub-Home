@@ -43,6 +43,7 @@ class ChatGptKernel(Kernel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.code_kernel = IPythonKernel()
+        self.code_kernel.iopub_socket = self.iopub_socket
 
     def do_execute(
         self,
@@ -101,12 +102,9 @@ class ChatGptKernel(Kernel):
                     )
 
             except openai.error.AuthenticationError:
-                exec_config = {
-                    # "limit": 0,
-                    "chain": False,
-                }
                 tb = traceback.format_exc(
-                    **exec_config,
+                    limit=0,
+                    chain=False,
                 )
                 msg = "Try restarting the kernel."
                 stream_content = {
@@ -120,12 +118,9 @@ class ChatGptKernel(Kernel):
                 )
 
             except Exception:
-                exec_config = {
-                    # "limit": 0,
-                    "chain": False,
-                }
                 tb = traceback.format_exc(
-                    **exec_config,
+                    limit=0,
+                    chain=False,
                 )
                 stream_content = {
                     "name": "stderr",
