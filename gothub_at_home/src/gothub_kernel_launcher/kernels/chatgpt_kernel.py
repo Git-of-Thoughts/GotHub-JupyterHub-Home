@@ -94,12 +94,14 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "name": "stdout",
                     "text": f"ChatGPT {model}:\n",
-                    "metadata": {"tags": ["ansi-blue-fg"]},
                 }
                 self.send_response(
                     self.iopub_socket,
                     "stream",
                     stream_content,
+                    metadata={
+                        "color": "#00ff00",
+                    },
                 )
 
                 response = openai.ChatCompletion.create(
