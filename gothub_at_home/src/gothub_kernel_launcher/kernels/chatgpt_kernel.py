@@ -98,7 +98,7 @@ class ChatGptKernel(IPythonKernel):
 
             except openai.error.AuthenticationError as e:
                 msg = (
-                    "\n"
+                    "\n\n"
                     "Please set OPENAI_API_KEY in $HOME/__keys__, "
                     "and restart the kernel."
                 )
@@ -121,8 +121,7 @@ class ChatGptKernel(IPythonKernel):
 
         return {
             "status": "ok",
-            # The base class increments the execution count
-            "execution_count": self.execution_count,
+            "execution_count": self.execution_count + 1,
             "payload": [],
             "user_expressions": {},
         }
