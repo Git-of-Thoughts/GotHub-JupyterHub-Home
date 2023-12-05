@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 import openai
@@ -27,12 +28,12 @@ class ChatGptKernel(Kernel):
 
     implementation = "ChatGPT"
     implementation_version = "1.0"
-    language = "chatgpt"
-    language_version = "0.1"
+    language = "python"
+    language_version = sys.version.split()[0]
     language_info = {
-        "name": "Any text",
-        "mimetype": "text/plain",
-        "file_extension": ".txt",
+        "name": "python",
+        "mimetype": "text/x-python",
+        "file_extension": ".py",
     }
     banner = "ChatGPT Kernel"
 
