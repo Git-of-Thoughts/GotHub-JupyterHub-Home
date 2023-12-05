@@ -1,0 +1,128 @@
+[project]
+name = "gothub"                    # Required
+version = "0.0.1"                  # Required
+description = "GotHub Data Engine" # Optional
+readme = "README.md"               # Optional
+
+requires-python = ">=3.10"
+license = { file = "LICENSE.txt" }
+keywords = ["gothub"]
+authors = [
+    { name = "Shangdian (King) Han", email = "kingh0730@berkeley.edu" },
+    { name = "Haohan (Wayne) Wang", email = "wangh5327@gmail.com" },
+    { name = "Long (Logan) Ju", email = "loganju2000@gmail.com" },
+]
+maintainers = [
+    { name = "Shangdian (King) Han", email = "kingh0730@berkeley.edu" },
+    { name = "Haohan (Wayne) Wang", email = "wangh5327@gmail.com" },
+    { name = "Long (Logan) Ju", email = "loganju2000@gmail.com" },
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+dependencies = [
+    "streamlit",
+    "streamlit-tags",
+    "streamlit-agraph",
+    "streamlit-pills",
+    "watchdog",
+    "Pillow",
+    "pandas",
+    "pydantic",
+    "Django",
+    "openai==0.28.1",
+    "langchain",
+    "langchainhub",
+    "google-cloud-firestore",
+    "google-auth-oauthlib",
+    "firebase-admin",
+    "python-dotenv",
+    "graphviz",
+    "wikipedia",
+    "matplotlib",
+    "plotly",
+    "pypandoc_binary",
+    "markdownify",
+    "html2text",
+    "html2md",
+    "beautifulsoup4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "poetry", # ! For streamlit community cloud
+    # "pre-commit",     # Installed using conda
+    "check-manifest",
+    "ipython",
+    "ipykernel",
+    "jupyter-repo2docker",
+]
+test = ["coverage"]
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Reports" = "https://github.com/pypa/sampleproject/issues"
+"Funding" = "https://donate.pypi.org"
+"Say Thanks!" = "http://saythanks.io/to/example"
+"Source" = "https://github.com/pypa/sampleproject/"
+
+[project.scripts]
+gothub = "gothub:main"
+gothub_django = "gothub_django:main"
+gotir = "gotir:main"
+gotpie = "gotpie:main"
+
+[tool.setuptools]
+package-data = { "gothub" = ["*.dat"] }
+
+
+[tool.poetry]
+name = "gothub"
+version = "0.1.0"
+description = ""
+authors = ["Shangdian (King) Han <kingh0730@gmail.com>"]
+maintainers = ["Long (Logan) Ju <loganju2000@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "gothub", from = "src" },
+    { include = "gotir", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "*"
+streamlit-tags = "*"
+streamlit-agraph = "*"
+streamlit-pills = "*"
+watchdog = "*"
+Pillow = "*"
+pandas = "*"
+pydantic = "*"
+Django = "*"
+openai = "0.28.1"
+langchain = "*"
+langchainhub = "*"
+google-cloud-firestore = "*"
+google-auth-oauthlib = "*"
+firebase-admin = "*"
+python-dotenv = "*"
+graphviz = "*"
+wikipedia = "*"
+matplotlib = "*"
+plotly = "*"
+pypandoc_binary = "*"
+markdownify = "*"
+html2text = "*"
+html2md = "*"
+beautifulsoup4 = "*"
+
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
