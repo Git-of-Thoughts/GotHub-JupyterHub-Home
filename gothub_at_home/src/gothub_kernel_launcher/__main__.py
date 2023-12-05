@@ -1,10 +1,16 @@
 """
 Copied from
 https://github.com/ipython/ipykernel/blob/e9ddcf50a30b59d63f585ffa9ffffd368095a54a/ipykernel_launcher.py#L9
+and
+https://jupyter-client.readthedocs.io/en/latest/wrapperkernels.html
 """
 
 
 import sys
+
+from ipykernel.kernelapp import IPKernelApp
+
+from .kernels.echo_kernel import EchoKernel
 
 if __name__ == "__main__":
     # Remove the CWD from sys.path while we load stuff.
@@ -12,6 +18,6 @@ if __name__ == "__main__":
     if sys.path[0] == "":
         del sys.path[0]
 
-    from ipykernel import kernelapp as app
-
-    app.launch_new_instance()
+    IPKernelApp.launch_instance(
+        kernel_class=EchoKernel,
+    )

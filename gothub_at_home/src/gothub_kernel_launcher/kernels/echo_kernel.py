@@ -5,6 +5,8 @@ class EchoKernel(Kernel):
     """
     Copied from
     https://ipython.readthedocs.io/en/3.x/development/wrapperkernels.html
+    and
+    https://jupyter-client.readthedocs.io/en/latest/wrapperkernels.html
     """
 
     implementation = "Echo"
