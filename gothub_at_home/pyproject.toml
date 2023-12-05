@@ -1,8 +1,8 @@
 [project]
-name = "gothub"                    # Required
-version = "0.0.1"                  # Required
-description = "GotHub Data Engine" # Optional
-readme = "README.md"               # Optional
+name = "gothub_at_home"        # Required
+version = "0.0.1"              # Required
+description = "GotHub at home" # Optional
+readme = "README.md"           # Optional
 
 requires-python = ">=3.10"
 license = { file = "LICENSE.txt" }
@@ -25,45 +25,11 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 
-dependencies = [
-    "streamlit",
-    "streamlit-tags",
-    "streamlit-agraph",
-    "streamlit-pills",
-    "watchdog",
-    "Pillow",
-    "pandas",
-    "pydantic",
-    "Django",
-    "openai==0.28.1",
-    "langchain",
-    "langchainhub",
-    "google-cloud-firestore",
-    "google-auth-oauthlib",
-    "firebase-admin",
-    "python-dotenv",
-    "graphviz",
-    "wikipedia",
-    "matplotlib",
-    "plotly",
-    "pypandoc_binary",
-    "markdownify",
-    "html2text",
-    "html2md",
-    "beautifulsoup4",
-]
+dependencies = []
 
 [project.optional-dependencies]
-dev = [
-    "pytest",
-    "poetry", # ! For streamlit community cloud
-    # "pre-commit",     # Installed using conda
-    "check-manifest",
-    "ipython",
-    "ipykernel",
-    "jupyter-repo2docker",
-]
-test = ["coverage"]
+dev = []
+test = []
 
 [project.urls]
 "Homepage" = "https://github.com/pypa/sampleproject"
@@ -73,54 +39,6 @@ test = ["coverage"]
 "Source" = "https://github.com/pypa/sampleproject/"
 
 [project.scripts]
-gothub = "gothub:main"
-gothub_django = "gothub_django:main"
-gotir = "gotir:main"
-gotpie = "gotpie:main"
-
-[tool.setuptools]
-package-data = { "gothub" = ["*.dat"] }
-
-
-[tool.poetry]
-name = "gothub"
-version = "0.1.0"
-description = ""
-authors = ["Shangdian (King) Han <kingh0730@gmail.com>"]
-maintainers = ["Long (Logan) Ju <loganju2000@gmail.com>"]
-readme = "README.md"
-packages = [
-    { include = "gothub", from = "src" },
-    { include = "gotir", from = "src" },
-]
-
-[tool.poetry.dependencies]
-python = "^3.11"
-streamlit = "*"
-streamlit-tags = "*"
-streamlit-agraph = "*"
-streamlit-pills = "*"
-watchdog = "*"
-Pillow = "*"
-pandas = "*"
-pydantic = "*"
-Django = "*"
-openai = "0.28.1"
-langchain = "*"
-langchainhub = "*"
-google-cloud-firestore = "*"
-google-auth-oauthlib = "*"
-firebase-admin = "*"
-python-dotenv = "*"
-graphviz = "*"
-wikipedia = "*"
-matplotlib = "*"
-plotly = "*"
-pypandoc_binary = "*"
-markdownify = "*"
-html2text = "*"
-html2md = "*"
-beautifulsoup4 = "*"
 
 
 [build-system]
