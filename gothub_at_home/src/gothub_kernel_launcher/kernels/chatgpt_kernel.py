@@ -97,7 +97,7 @@ class ChatGptKernel(IPythonKernel):
                 }
                 self.send_response(
                     self.iopub_socket,
-                    "info",
+                    "warning",
                     stream_content,
                 )
 
