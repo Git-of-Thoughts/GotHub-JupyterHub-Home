@@ -1,12 +1,19 @@
 from pathlib import Path
 
-from dotenv import dotenv_values
+import openai
+from dotenv import load_dotenv
 from ipykernel.kernelbase import Kernel
+
+# Model
+DEFAULT_MODEL = "gpt-4"
+DEFAULT_SYSTEM_PROMPT = """\
+"""
+
 
 # Home directory of the user
 HOME_PATH = Path.home()
-KEYS_PATH = HOME_PATH / "_keys"
-DOTENV_VALUES = dotenv_values(KEYS_PATH)
+DOTENV_PATH = HOME_PATH / "_keys"
+load_dotenv(DOTENV_PATH)
 
 
 class ChatGptKernel(Kernel):
@@ -37,15 +44,38 @@ class ChatGptKernel(Kernel):
         allow_stdin=False,
     ):
         if not silent:
-            stream_content = {
-                "name": "stdout",
-                "text": str(DOTENV_VALUES.get("OPENAI_API_KEY")),
-            }
-            self.send_response(
-                self.iopub_socket,
-                "stream",
-                stream_content,
+            response = openai.ChatCompletion.create(
+                model=DEFAULT_MODEL,
+                messages=[  # TODO use system messages
+                    {
+                        "role": "system",
+                        "content": DEFAULT_SYSTEM_PROMPT,
+                    },
+                    {
+                        "role": "user",
+                        "content": code,
+                    },
+                ],
+                stream=True,
             )
+            for res in response:
+                output = "".join(
+                    [
+                        choice["delta"]["content"]
+                        if "content" in choice["delta"]
+                        else ""
+                        for choice in res["choices"]
+                    ]
+                )
+                stream_content = {
+                    "name": "stdout",
+                    "text": output,
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "stream",
+                    stream_content,
+                )
 
         return {
             "status": "ok",
