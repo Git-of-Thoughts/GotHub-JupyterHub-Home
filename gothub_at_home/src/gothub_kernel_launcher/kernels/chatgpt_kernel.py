@@ -45,32 +45,43 @@ class ChatGptKernel(Kernel):
         allow_stdin=False,
     ):
         if not silent:
-            response = openai.ChatCompletion.create(
-                model=DEFAULT_MODEL,
-                messages=[  # TODO use system messages
-                    {
-                        "role": "system",
-                        "content": DEFAULT_SYSTEM_PROMPT,
-                    },
-                    {
-                        "role": "user",
-                        "content": code,
-                    },
-                ],
-                stream=True,
-            )
-            for res in response:
-                output = "".join(
-                    [
-                        choice["delta"]["content"]
-                        if "content" in choice["delta"]
-                        else ""
-                        for choice in res["choices"]
-                    ]
+            try:
+                response = openai.ChatCompletion.create(
+                    model=DEFAULT_MODEL,
+                    messages=[  # TODO use system messages
+                        {
+                            "role": "system",
+                            "content": DEFAULT_SYSTEM_PROMPT,
+                        },
+                        {
+                            "role": "user",
+                            "content": code,
+                        },
+                    ],
+                    stream=True,
                 )
+                for res in response:
+                    output = "".join(
+                        [
+                            choice["delta"]["content"]
+                            if "content" in choice["delta"]
+                            else ""
+                            for choice in res["choices"]
+                        ]
+                    )
+                    stream_content = {
+                        "name": "stdout",
+                        "text": output,
+                    }
+                    self.send_response(
+                        self.iopub_socket,
+                        "stream",
+                        stream_content,
+                    )
+            except Exception as err:
                 stream_content = {
-                    "name": "stdout",
-                    "text": output,
+                    "name": "stderr",
+                    "text": f"{err}",
                 }
                 self.send_response(
                     self.iopub_socket,
