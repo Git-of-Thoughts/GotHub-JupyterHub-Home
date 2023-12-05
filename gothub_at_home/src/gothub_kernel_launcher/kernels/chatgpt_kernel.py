@@ -68,14 +68,14 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
-        set_gpt_3_5_regex = r"^\s*set\s+(gpt|gpt-)3.5\s*"
-        set_gpt_4_regex = r"^\s*set\s+(gpt|gpt-)4\s*"
+        with_gpt_3_5_regex = r"^\s*with\s+(gpt|gpt-)3.5\s*"
+        with_gpt_4_regex = r"^\s*with\s+(gpt|gpt-)4\s*"
 
-        global DEFAULT_MODEL
+        model = DEFAULT_MODEL
 
-        if set_gpt_3_5_match := re.match(set_gpt_3_5_regex, code):
-            code = code[set_gpt_3_5_match.end() :]
-            DEFAULT_MODEL = "gpt-3.5-turbo"
+        if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
+            code = code[with_gpt_3_5_match.end() :]
+            model = "gpt-3.5-turbo"
             return self.do_execute(
                 code,
                 silent,
@@ -84,9 +84,9 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
-        if set_gpt_4_match := re.match(set_gpt_4_regex, code):
-            code = code[set_gpt_4_match.end() :]
-            DEFAULT_MODEL = "gpt-4"
+        if with_gpt_4_match := re.match(with_gpt_4_regex, code):
+            code = code[with_gpt_4_match.end() :]
+            model = "gpt-4"
             return self.do_execute(
                 code,
                 silent,
@@ -97,8 +97,6 @@ class ChatGptKernel(IPythonKernel):
 
         if not silent:
             try:
-                model = DEFAULT_MODEL
-
                 # Make it colorful
                 stream_content = {
                     "metadata": {},
