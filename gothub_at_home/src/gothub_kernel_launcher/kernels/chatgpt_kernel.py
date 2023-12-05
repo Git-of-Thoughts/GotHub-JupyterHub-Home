@@ -78,6 +78,7 @@ class ChatGptKernel(Kernel):
                         "stream",
                         stream_content,
                     )
+
             except Exception as err:
                 stream_content = {
                     "name": "stderr",
