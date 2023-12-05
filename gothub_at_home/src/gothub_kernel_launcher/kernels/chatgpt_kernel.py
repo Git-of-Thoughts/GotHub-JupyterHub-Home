@@ -47,6 +47,15 @@ class ChatGptKernel(IPythonKernel):
         user_expressions=None,
         allow_stdin=False,
     ):
+        if code.strip() == "":
+            return {
+                "status": "ok",
+                # The base class increments the execution count
+                "execution_count": self.execution_count,
+                "payload": [],
+                "user_expressions": {},
+            }
+
         as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
         if as_code_match := re.match(as_code_regex, code):
