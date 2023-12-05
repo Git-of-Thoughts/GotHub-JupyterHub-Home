@@ -88,8 +88,20 @@ class ChatGptKernel(IPythonKernel):
 
         if not silent:
             try:
+                model = DEFAULT_MODEL
+
+                stream_content = {
+                    "name": "stdout",
+                    "text": f"ChatGPT {model}:\n",
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "stream",
+                    stream_content,
+                )
+
                 response = openai.ChatCompletion.create(
-                    model=DEFAULT_MODEL,
+                    model=model,
                     messages=[  # TODO use system messages
                         {
                             "role": "system",

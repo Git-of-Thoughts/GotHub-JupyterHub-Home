@@ -38,6 +38,8 @@ def ask(
         stream=True,
     )
 
+    print(f"ChatGPT {model}:\n")
+
     all_outputs = []
     for res in response:
         output = "".join(
