@@ -90,9 +90,11 @@ class ChatGptKernel(IPythonKernel):
             try:
                 model = DEFAULT_MODEL
 
+                # Make it colorful
                 stream_content = {
                     "name": "stdout",
                     "text": f"ChatGPT {model}:\n",
+                    "metadata": {"tags": ["ansi-blue-fg"]},
                 }
                 self.send_response(
                     self.iopub_socket,
