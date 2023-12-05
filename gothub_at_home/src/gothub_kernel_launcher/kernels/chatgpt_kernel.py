@@ -21,7 +21,7 @@ DOTENV_VALUES = dotenv_values(DOTENV_PATH)
 openai.api_key = DOTENV_VALUES["OPENAI_API_KEY"]
 
 
-class ChatGptKernel(Kernel):
+class ChatGptKernel(IPythonKernel):
     """
     Copied from
     https://ipython.readthedocs.io/en/3.x/development/wrapperkernels.html
@@ -40,11 +40,6 @@ class ChatGptKernel(Kernel):
     }
     banner = "ChatGPT Kernel"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.code_kernel = IPythonKernel()
-        self.code_kernel.iopub_socket = self.iopub_socket
-
     def do_execute(
         self,
         code: str,
@@ -58,7 +53,7 @@ class ChatGptKernel(Kernel):
         match = re.match(as_code_regex, code)
         if match:
             code = code[match.end() :]
-            return self.code_kernel.do_execute(
+            return super().do_execute(
                 code,
                 silent,
                 store_history,
