@@ -47,8 +47,9 @@ def ask(
             ]
         )
 
-        print(output, end="")
-
         all_outputs.append(output)
+
+        print(output, end="")
+    print("\n")
 
     return "".join(all_outputs)
