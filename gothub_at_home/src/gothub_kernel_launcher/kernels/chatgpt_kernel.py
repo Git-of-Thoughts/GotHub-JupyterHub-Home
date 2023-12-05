@@ -93,7 +93,9 @@ class ChatGptKernel(IPythonKernel):
                 # Make it colorful
                 stream_content = {
                     "metadata": {},
-                    "data": f"text/html: <h1>ChatGPT {model}:</h1>",
+                    "data": {
+                        "text/html": f"<h1>ChatGPT {model}:</h1>",
+                    },
                 }
                 self.send_response(
                     self.iopub_socket,
