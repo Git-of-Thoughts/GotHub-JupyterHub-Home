@@ -1,3 +1,4 @@
+import re
 import sys
 import traceback
 from pathlib import Path
@@ -45,12 +46,25 @@ class ChatGptKernel(Kernel):
 
     def do_execute(
         self,
-        code,
+        code: str,
         silent,
         store_history=True,
         user_expressions=None,
         allow_stdin=False,
     ):
+        as_code_regex = r"^\s*as\s+(code|py|python)\s+"
+
+        match = re.match(as_code_regex, code)
+        if match:
+            code = code[match.end() :]
+            return self.code_kernel.do_execute(
+                code,
+                silent,
+                store_history,
+                user_expressions,
+                allow_stdin,
+            )
+
         if not silent:
             try:
                 response = openai.ChatCompletion.create(
