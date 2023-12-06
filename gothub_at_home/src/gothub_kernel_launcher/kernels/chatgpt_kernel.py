@@ -158,10 +158,10 @@ summary::-webkit-details-marker {{
 </style>
 <details>
     <summary>
-        What is the meaning of life?
+        You said:
         <span class="icon">👇</span>
     </summary>
-    <p>An HTML paragraph containing <md-span>*italic*</md-span> text.</p>
+    <md-span>{code}</md-span>
 </details>
 """,
                     },
