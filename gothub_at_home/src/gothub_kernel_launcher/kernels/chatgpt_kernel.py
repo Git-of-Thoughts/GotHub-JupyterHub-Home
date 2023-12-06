@@ -134,42 +134,9 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"""
+                        "text/markdown": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
-
-<script src="prism.js"></script>
-<script type="module" src="https://md-block.verou.me/md-block.js"></script>
-
-<style>
-details {{
-    user-select: none;
-}}
-details>summary span.icon {{
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s;
-    margin-left: auto;
-}}
-details[open] summary span.icon {{
-    transform: rotate(180deg);
-}}
-summary {{
-    cursor: pointer;
-}}
-summary::-webkit-details-marker {{
-    display: none;
-}}
-</style>
-<details>
-    <summary>
-        You said:
-        <span class="icon">👇</span>
-    </summary>
-    <md-span>
-        # what
-        {html.escape(code)}
-    </md-span>
-</details>
+{code}
 """,
                     },
                 }
