@@ -136,61 +136,69 @@ class ChatGptKernel(IPythonKernel):
 
                 return result
 
-            if not silent:
+            if silent:
+                return super().do_execute(
+                    "None",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
+
+            stream_content = {
+                "metadata": {},
+                "data": {
+                    "text/markdown": f"**ChatGPT {got.OPENAI_MODEL}:**",
+                },
+            }
+            self.send_response(
+                self.iopub_socket,
+                "display_data",
+                stream_content,
+            )
+
+            self.chat_messages = self.chat_messages + [
+                {
+                    "role": "user",
+                    "content": code,
+                },
+            ]
+
+            response = openai.ChatCompletion.create(
+                model=got.OPENAI_MODEL,
+                messages=self.chat_messages,
+                stream=True,
+            )
+
+            all_outputs = []
+            for res in response:
+                output = "".join(
+                    [
+                        choice["delta"]["content"]
+                        if "content" in choice["delta"]
+                        else ""
+                        for choice in res["choices"]
+                    ]
+                )
+
+                all_outputs.append(output)
+
                 stream_content = {
-                    "metadata": {},
-                    "data": {
-                        "text/markdown": f"**ChatGPT {got.OPENAI_MODEL}:**",
-                    },
+                    "name": "stdout",
+                    "text": output,
                 }
                 self.send_response(
                     self.iopub_socket,
-                    "display_data",
+                    "stream",
                     stream_content,
                 )
 
-                self.chat_messages = self.chat_messages + [
-                    {
-                        "role": "user",
-                        "content": code,
-                    },
-                ]
-
-                response = openai.ChatCompletion.create(
-                    model=got.OPENAI_MODEL,
-                    messages=self.chat_messages,
-                    stream=True,
-                )
-
-                all_outputs = []
-                for res in response:
-                    output = "".join(
-                        [
-                            choice["delta"]["content"]
-                            if "content" in choice["delta"]
-                            else ""
-                            for choice in res["choices"]
-                        ]
-                    )
-
-                    all_outputs.append(output)
-
-                    stream_content = {
-                        "name": "stdout",
-                        "text": output,
-                    }
-                    self.send_response(
-                        self.iopub_socket,
-                        "stream",
-                        stream_content,
-                    )
-
-                self.chat_messages = self.chat_messages + [
-                    {
-                        "role": "assistant",
-                        "content": "".join(all_outputs),
-                    },
-                ]
+            self.chat_messages = self.chat_messages + [
+                {
+                    "role": "assistant",
+                    "content": "".join(all_outputs),
+                },
+            ]
 
         except openai.error.AuthenticationError as e:
             msg = "\n\nPlease set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
