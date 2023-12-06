@@ -82,7 +82,7 @@ class ChatGptKernel(IPythonKernel):
             # ! This is pretty important
             got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
-            new_chat_regex = r"^\s*(?:|as\s+)new\s+chat(\s*$|\s+\S)"
+            new_chat_regex = r"^\s*as\s+new\s+chat(\s*$|\s+\S)"
 
             if new_chat_match := re.match(new_chat_regex, code):
                 code = code[new_chat_match.start(1) :]
