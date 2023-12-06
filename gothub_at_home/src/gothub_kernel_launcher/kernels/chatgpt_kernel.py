@@ -6,6 +6,8 @@ import openai
 from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
 
+from .errors import GothubKernelError
+
 # Model
 DEFAULT_MODEL = "gpt-4"
 DEFAULT_SYSTEM_PROMPT = """\
@@ -18,6 +20,12 @@ model = DEFAULT_MODEL
 # Home directory of the user
 HOME_PATH = Path.home()
 KEYS_YAML_PATH = HOME_PATH / "__keys__.yaml"
+
+
+class KeysYamlNotFoundError(GothubKernelError):
+    """Raised when __keys__.yaml is not found in $HOME."""
+
+    pass
 
 
 class ChatGptKernel(IPythonKernel):
@@ -51,6 +59,12 @@ class ChatGptKernel(IPythonKernel):
             if code.strip() == "":
                 # We could early return
                 pass
+
+            if not KEYS_YAML_PATH.exists():
+                raise KeysYamlNotFoundError(
+                    "Please set OPENAI_API_KEY in $HOME/__keys__.yaml, "
+                    "and restart the kernel."
+                )
 
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text())
             openai.api_key = keys_yaml_values["OPENAI_API_KEY"]
