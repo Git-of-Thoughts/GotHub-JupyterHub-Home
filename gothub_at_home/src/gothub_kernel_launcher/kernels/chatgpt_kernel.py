@@ -2,6 +2,7 @@ import re
 import sys
 from pathlib import Path
 
+import got
 import openai
 from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
@@ -87,7 +88,10 @@ class ChatGptKernel(IPythonKernel):
 
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
                 code = code[with_gpt_3_5_match.end() :]
+
                 model = "gpt-3.5-turbo"
+                got.OPENAI_MODEL = model
+
                 result = self.do_execute(
                     code,
                     silent,
@@ -95,7 +99,9 @@ class ChatGptKernel(IPythonKernel):
                     user_expressions,
                     allow_stdin,
                 )
+
                 model = DEFAULT_MODEL
+
                 return result
 
             if with_gpt_4_match := re.match(with_gpt_4_regex, code):
