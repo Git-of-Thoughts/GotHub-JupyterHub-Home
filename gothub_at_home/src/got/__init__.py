@@ -2,7 +2,10 @@ import openai
 
 from .utils import bold
 
-OPENAI_MODEL = "gpt-4"
+DEFAULT_OPENAI_MODEL = "gpt-4"
+
+
+OPENAI_MODEL = DEFAULT_OPENAI_MODEL
 
 
 def _ask(

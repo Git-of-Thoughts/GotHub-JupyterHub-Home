@@ -10,12 +10,12 @@ from yaml import safe_load
 from .errors import GothubKernelError
 
 # Model
-DEFAULT_MODEL = "gpt-4"
+DEFAULT_OPENAI_MODEL = "gpt-4"
 DEFAULT_SYSTEM_PROMPT = """\
 """
 
 
-model = DEFAULT_MODEL
+OPENAI_MODEL = DEFAULT_OPENAI_MODEL
 
 
 # Home directory of the user
@@ -81,7 +81,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            global model
+            global OPENAI_MODEL
 
             with_gpt_3_5_regex = r"^\s*with\s+(gpt|gpt-)3.5\s*"
             with_gpt_4_regex = r"^\s*with\s+(gpt|gpt-)4\s*"
@@ -89,8 +89,8 @@ class ChatGptKernel(IPythonKernel):
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
                 code = code[with_gpt_3_5_match.end() :]
 
-                model = "gpt-3.5-turbo"
-                got.OPENAI_MODEL = model
+                OPENAI_MODEL = "gpt-3.5-turbo"
+                got.OPENAI_MODEL = "gpt-3.5-turbo"
 
                 result = self.do_execute(
                     code,
@@ -100,13 +100,17 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                model = DEFAULT_MODEL
+                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
                 return result
 
             if with_gpt_4_match := re.match(with_gpt_4_regex, code):
                 code = code[with_gpt_4_match.end() :]
-                model = "gpt-4"
+
+                OPENAI_MODEL = "gpt-4"
+                got.OPENAI_MODEL = "gpt-4"
+
                 result = self.do_execute(
                     code,
                     silent,
@@ -114,14 +118,17 @@ class ChatGptKernel(IPythonKernel):
                     user_expressions,
                     allow_stdin,
                 )
-                model = DEFAULT_MODEL
+
+                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+
                 return result
 
             if not silent:
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"<b>ChatGPT {model}:</b>",
+                        "text/html": f"<b>ChatGPT {OPENAI_MODEL}:</b>",
                     },
                 }
                 self.send_response(
@@ -131,7 +138,7 @@ class ChatGptKernel(IPythonKernel):
                 )
 
                 response = openai.ChatCompletion.create(
-                    model=model,
+                    model=OPENAI_MODEL,
                     messages=[  # TODO use system messages
                         {
                             "role": "system",
