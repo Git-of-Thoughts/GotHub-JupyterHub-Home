@@ -198,6 +198,7 @@ class ChatGptKernel(IPythonKernel):
         return {
             "status": "ok",
             # The base class increments the execution count
+            # ! But somehow it's not increasing unless "as code" is used
             "execution_count": self.execution_count,
             "payload": [],
             "user_expressions": {},
