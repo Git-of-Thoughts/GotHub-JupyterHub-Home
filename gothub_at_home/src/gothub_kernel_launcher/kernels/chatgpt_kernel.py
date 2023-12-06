@@ -172,22 +172,24 @@ class ChatGptKernel(IPythonKernel):
 
         except openai.error.AuthenticationError as e:
             msg = "\n\nPlease set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
-            return super().do_execute(
-                f"raise Exception({repr(repr(e))} + {repr(msg)})",
-                silent,
-                store_history,
-                user_expressions,
-                allow_stdin,
-            )
+            # return super().do_execute(
+            #     f"raise Exception({repr(repr(e))} + {repr(msg)})",
+            #     silent,
+            #     store_history,
+            #     user_expressions,
+            #     allow_stdin,
+            # )
+            raise openai.error.AuthenticationError(msg) from e
 
         except Exception as e:
-            return super().do_execute(
-                f"raise Exception({repr(repr(e))})",
-                silent,
-                store_history,
-                user_expressions,
-                allow_stdin,
-            )
+            # return super().do_execute(
+            #     f"raise Exception({repr(repr(e))})",
+            #     silent,
+            #     store_history,
+            #     user_expressions,
+            #     allow_stdin,
+            # )
+            raise e
 
         return {
             "status": "ok",
