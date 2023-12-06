@@ -134,62 +134,7 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/markdown": f"""
-<b>ChatGPT {OPENAI_MODEL}:</b>
-<style>
-details {{
-    user-select: none;
-}}
-details>summary span.icon {{
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s;
-    margin-left: auto;
-}}
-details[open] summary span.icon {{
-    transform: rotate(180deg);
-}}
-summary {{
-    cursor: pointer;
-}}
-summary::-webkit-details-marker {{
-    display: none;
-}}
-</style>
-<details>
-    <summary>
-        You said:
-        <span class="icon">👇</span>
-    </summary>
-""",
-                    },
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "display_data",
-                    stream_content,
-                )
-
-                stream_content = {
-                    "metadata": {},
-                    "data": {
-                        "text/markdown": f"""
-                        <div markdown="1">{code}</div>
-""",
-                    },
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "display_data",
-                    stream_content,
-                )
-
-                stream_content = {
-                    "metadata": {},
-                    "data": {
-                        "text/markdown": """
-</details>
-""",
+                        "text/markdown": f"{code}\n**ChatGPT {OPENAI_MODEL}:**",
                     },
                 }
                 self.send_response(
