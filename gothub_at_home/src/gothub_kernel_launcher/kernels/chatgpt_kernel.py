@@ -82,6 +82,19 @@ class ChatGptKernel(IPythonKernel):
             # ! This is pretty important
             got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
+            as_code_regex = r"^\s*as\s+(?:code|py|python)(\s*$|\s+\S)"
+
+            if as_code_match := re.match(as_code_regex, code):
+                code = code[as_code_match.start(1) :]
+
+                return super().do_execute(
+                    code,
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
+
             new_chat_regex = r"^\s*as\s+new\s+chat(\s*$|\s+\S)"
 
             if new_chat_match := re.match(new_chat_regex, code):
@@ -90,19 +103,6 @@ class ChatGptKernel(IPythonKernel):
                 self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
                 return self.do_execute(
-                    code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
-                )
-
-            as_code_regex = r"^\s*as\s+(?:code|py|python)(\s*$|\s+\S)"
-
-            if as_code_match := re.match(as_code_regex, code):
-                code = code[as_code_match.start(1) :]
-
-                return super().do_execute(
                     code,
                     silent,
                     store_history,
