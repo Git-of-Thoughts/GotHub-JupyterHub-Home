@@ -24,9 +24,7 @@ def _ask(
         raise ValueError("Only one of question or prompt can be provided")
 
     user_prompt = question or prompt
-
-    if model is None:
-        model = OPENAI_MODEL
+    model = model or OPENAI_MODEL
 
     response = openai.ChatCompletion.create(
         model=model,
