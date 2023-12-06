@@ -70,13 +70,13 @@ class ChatGptKernel(IPythonKernel):
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text()) or {}
             openai.api_key = keys_yaml_values.get("OPENAI_API_KEY")
 
+            # ! This is pretty important
+            got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
             as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end() :]
-
-                # ! This is pretty important
-                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
                 return super().do_execute(
                     code,
