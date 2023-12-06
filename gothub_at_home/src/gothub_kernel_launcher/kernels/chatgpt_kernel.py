@@ -49,14 +49,12 @@ class ChatGptKernel(IPythonKernel):
         super().__init__(*args, **kwargs)
 
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-        self.chat_messages = (
-            [
-                {
-                    "role": "system",
-                    "content": DEFAULT_SYSTEM_PROMPT,
-                },
-            ],
-        )
+        self.chat_messages = [
+            {
+                "role": "system",
+                "content": DEFAULT_SYSTEM_PROMPT,
+            },
+        ]
 
     def do_execute(
         self,
