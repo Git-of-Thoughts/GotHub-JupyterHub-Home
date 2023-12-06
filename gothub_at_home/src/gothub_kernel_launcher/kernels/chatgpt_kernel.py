@@ -165,7 +165,10 @@ summary::-webkit-details-marker {{
         You said:
         <span class="icon">👇</span>
     </summary>
-    <md-span># what {html.escape(code)}</md-span>
+    <md-span>
+        # what
+        {html.escape(code)}
+    </md-span>
 </details>
 """,
                     },
