@@ -75,7 +75,8 @@ class ChatGptKernel(IPythonKernel):
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end() :]
 
-                # got.OPENAI_MODEL = OPENAI_MODEL
+                # ! This is pretty important
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 return super().do_execute(
                     code,
