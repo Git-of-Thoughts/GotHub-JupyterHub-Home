@@ -104,7 +104,8 @@ class ChatGptKernel(IPythonKernel):
                 )
 
                 OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = OPENAI_MODEL
+                # ! You can't do this
+                # got.OPENAI_MODEL = OPENAI_MODEL
 
                 return result
 
@@ -123,7 +124,8 @@ class ChatGptKernel(IPythonKernel):
                 )
 
                 OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = OPENAI_MODEL
+                # ! You can't do this
+                # got.OPENAI_MODEL = OPENAI_MODEL
 
                 return result
 
