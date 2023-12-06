@@ -136,7 +136,6 @@ class ChatGptKernel(IPythonKernel):
                         "text/html": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
 <script type="module" src="https://md-block.verou.me/md-block.js"></script>
-<p>An HTML paragraph containing <md-span>*italic*</md-span> text.</p>
 <style>
 details {{
     user-select: none;
@@ -151,7 +150,6 @@ details[open] summary span.icon {{
     transform: rotate(180deg);
 }}
 summary {{
-    display: flex;
     cursor: pointer;
 }}
 summary::-webkit-details-marker {{
@@ -163,9 +161,7 @@ summary::-webkit-details-marker {{
         What is the meaning of life?
         <span class="icon">👇</span>
     </summary>
-    <p>
-        42
-    </p>
+    <p>An HTML paragraph containing <md-span>*italic*</md-span> text.</p>
 </details>
 """,
                     },
