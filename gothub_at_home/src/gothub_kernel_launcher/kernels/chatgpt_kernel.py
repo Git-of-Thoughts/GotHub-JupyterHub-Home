@@ -195,6 +195,14 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
+        return super().do_execute(
+            "",
+            silent,
+            store_history,
+            user_expressions,
+            allow_stdin,
+        )
+
         return {
             "status": "ok",
             # The base class increments the execution count
