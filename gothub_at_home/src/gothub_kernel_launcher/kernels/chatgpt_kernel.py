@@ -85,7 +85,7 @@ class ChatGptKernel(IPythonKernel):
             new_chat_regex = r"^\s*new\s+chat(\s*$|\s+\S)"
 
             if new_chat_match := re.match(new_chat_regex, code):
-                code = code[new_chat_match.start() :]
+                code = code[new_chat_match.start(1) :]
 
                 self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
@@ -100,7 +100,7 @@ class ChatGptKernel(IPythonKernel):
             as_code_regex = r"^\s*as\s+(?:code|py|python)(\s*$|\s+\S)"
 
             if as_code_match := re.match(as_code_regex, code):
-                code = code[as_code_match.start() :]
+                code = code[as_code_match.start(1) :]
 
                 return super().do_execute(
                     code,
@@ -114,7 +114,7 @@ class ChatGptKernel(IPythonKernel):
             with_gpt_4_regex = r"^\s*with\s+(?:gpt|gpt-)4(\s*$|\s+\S)"
 
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
-                code = code[with_gpt_3_5_match.start() :]
+                code = code[with_gpt_3_5_match.start(1) :]
 
                 self.OPENAI_MODEL_TO_BE_SET = "gpt-3.5-turbo"
                 got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
@@ -134,7 +134,7 @@ class ChatGptKernel(IPythonKernel):
                 return result
 
             if with_gpt_4_match := re.match(with_gpt_4_regex, code):
-                code = code[with_gpt_4_match.start() :]
+                code = code[with_gpt_4_match.start(1) :]
 
                 self.OPENAI_MODEL_TO_BE_SET = "gpt-4"
                 got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
