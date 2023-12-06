@@ -196,7 +196,7 @@ class ChatGptKernel(IPythonKernel):
             )
 
         return super().do_execute(
-            "",
+            "None",
             silent,
             store_history,
             user_expressions,
