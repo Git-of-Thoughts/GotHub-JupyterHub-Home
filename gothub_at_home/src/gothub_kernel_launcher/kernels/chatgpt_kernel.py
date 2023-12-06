@@ -14,7 +14,7 @@ DEFAULT_SYSTEM_PROMPT = """\
 """
 
 
-OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
+OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
 
 # Home directory of the user
@@ -68,7 +68,7 @@ class ChatGptKernel(IPythonKernel):
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text()) or {}
             openai.api_key = keys_yaml_values.get("OPENAI_API_KEY")
 
-            global OPENAI_MODEL_TO_BE_SET
+            global OPENAI_MODEL
 
             as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
@@ -76,7 +76,7 @@ class ChatGptKernel(IPythonKernel):
                 code = code[as_code_match.end() :]
 
                 # ! This is pretty important
-                got.OPENAI_MODEL = OPENAI_MODEL_TO_BE_SET
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 return super().do_execute(
                     code,
@@ -92,8 +92,8 @@ class ChatGptKernel(IPythonKernel):
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
                 code = code[with_gpt_3_5_match.end() :]
 
-                OPENAI_MODEL_TO_BE_SET = "gpt-3.5-turbo"
-                got.OPENAI_MODEL = OPENAI_MODEL_TO_BE_SET
+                OPENAI_MODEL = "gpt-3.5-turbo"
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 result = self.do_execute(
                     code,
@@ -103,16 +103,16 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = OPENAI_MODEL_TO_BE_SET
+                OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 return result
 
             if with_gpt_4_match := re.match(with_gpt_4_regex, code):
                 code = code[with_gpt_4_match.end() :]
 
-                OPENAI_MODEL_TO_BE_SET = "gpt-4"
-                got.OPENAI_MODEL = OPENAI_MODEL_TO_BE_SET
+                OPENAI_MODEL = "gpt-4"
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 result = self.do_execute(
                     code,
@@ -122,8 +122,8 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = OPENAI_MODEL_TO_BE_SET
+                OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 return result
 
@@ -131,7 +131,7 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"<b>ChatGPT {OPENAI_MODEL_TO_BE_SET}:</b>",
+                        "text/html": f"<b>ChatGPT {OPENAI_MODEL}:</b>",
                     },
                 }
                 self.send_response(
@@ -141,7 +141,7 @@ class ChatGptKernel(IPythonKernel):
                 )
 
                 response = openai.ChatCompletion.create(
-                    model=OPENAI_MODEL_TO_BE_SET,
+                    model=OPENAI_MODEL,
                     messages=[  # TODO use system messages
                         {
                             "role": "system",
