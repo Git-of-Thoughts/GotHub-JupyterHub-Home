@@ -110,7 +110,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                self.execution_count = 0
+                self.shell.execution_count = 0
 
                 return result
 
