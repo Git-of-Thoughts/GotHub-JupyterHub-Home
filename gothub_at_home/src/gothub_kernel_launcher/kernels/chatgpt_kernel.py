@@ -110,8 +110,6 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                self.shell.execution_count = 0
-
                 return result
 
             with_gpt_3_5_regex = r"^\s*with\s+(?:gpt|gpt-)3.5(\s*$|\s+\S)"
