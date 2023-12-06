@@ -156,12 +156,25 @@ summary::-webkit-details-marker {{
     display: none;
 }}
 </style>
-<details>
+<>
     <summary>
         You said:
         <span class="icon">👇</span>
     </summary>
-    {html.escape(code)}
+""",
+                    },
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "display_data",
+                    stream_content,
+                )
+
+                stream_content = {
+                    "metadata": {},
+                    "data": {
+                        "text/markdown": f"""
+{code}
 """,
                     },
                 }
