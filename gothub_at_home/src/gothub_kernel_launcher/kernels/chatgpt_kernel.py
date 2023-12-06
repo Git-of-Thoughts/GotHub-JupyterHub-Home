@@ -136,7 +136,33 @@ class ChatGptKernel(IPythonKernel):
                     "data": {
                         "text/markdown": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
-{code}
+<style>
+details {{
+    user-select: none;
+}}
+details>summary span.icon {{
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s;
+    margin-left: auto;
+}}
+details[open] summary span.icon {{
+    transform: rotate(180deg);
+}}
+summary {{
+    cursor: pointer;
+}}
+summary::-webkit-details-marker {{
+    display: none;
+}}
+</style>
+<details>
+    <summary>
+        You said:
+        <span class="icon">👇</span>
+    </summary>
+    {html.escape(code)}
+</details>
 """,
                     },
                 }
