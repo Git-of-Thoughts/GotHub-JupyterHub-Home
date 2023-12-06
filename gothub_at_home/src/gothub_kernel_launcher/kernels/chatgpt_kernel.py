@@ -135,8 +135,9 @@ class ChatGptKernel(IPythonKernel):
                     "metadata": {},
                     "data": {
                         "text/markdown": f"""
-                            {code}
-                            **ChatGPT {OPENAI_MODEL}:**
+**You said:**
+{code}
+**ChatGPT {OPENAI_MODEL}:**
                         """
                     },
                 }
