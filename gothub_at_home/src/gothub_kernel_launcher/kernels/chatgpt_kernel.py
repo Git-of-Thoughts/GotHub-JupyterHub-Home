@@ -131,7 +131,7 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"<b>ChatGPT {OPENAI_MODEL}:</b>",
+                        "text/html": f"<b>ChatGPT {got.OPENAI_MODEL}:</b>",
                     },
                 }
                 self.send_response(
@@ -141,7 +141,7 @@ class ChatGptKernel(IPythonKernel):
                 )
 
                 response = openai.ChatCompletion.create(
-                    model=OPENAI_MODEL,
+                    model=got.OPENAI_MODEL,
                     messages=[  # TODO use system messages
                         {
                             "role": "system",
