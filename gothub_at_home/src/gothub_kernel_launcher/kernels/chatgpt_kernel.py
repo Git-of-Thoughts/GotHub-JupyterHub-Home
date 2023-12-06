@@ -151,18 +151,19 @@ class ChatGptKernel(IPythonKernel):
                     stream_content,
                 )
 
-                response = openai.ChatCompletion.create(
-                    model=got.OPENAI_MODEL,
-                    messages=[  # TODO use system messages
-                        {
-                            "role": "system",
-                            "content": DEFAULT_SYSTEM_PROMPT,
-                        },
+                self.chat_messages = (
+                    self.chat_messages
+                    + [
                         {
                             "role": "user",
                             "content": code,
                         },
                     ],
+                )
+
+                response = openai.ChatCompletion.create(
+                    model=got.OPENAI_MODEL,
+                    messages=self.chat_messages,
                     stream=True,
                 )
                 for res in response:
