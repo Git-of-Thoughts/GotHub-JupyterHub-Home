@@ -179,7 +179,15 @@ class ChatGptKernel(IPythonKernel):
             #     user_expressions,
             #     allow_stdin,
             # )
-            raise openai.error.AuthenticationError(msg) from e
+            # raise openai.error.AuthenticationError(msg) from e
+            return {
+                "status": "error",
+                # The base class increments the execution count
+                "execution_count": self.execution_count,
+                "ename": "AuthenticationError",
+                "evalue": msg,
+                "traceback": [],
+            }
 
         except Exception as e:
             # return super().do_execute(
