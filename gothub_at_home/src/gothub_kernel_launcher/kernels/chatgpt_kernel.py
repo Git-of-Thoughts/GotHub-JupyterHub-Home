@@ -3,9 +3,8 @@ import sys
 from pathlib import Path
 
 import openai
-from dotenv import dotenv_values
 from ipykernel.ipkernel import IPythonKernel
-from ipykernel.kernelbase import Kernel
+from yaml import safe_load
 
 # Model
 DEFAULT_MODEL = "gpt-4"
@@ -18,9 +17,7 @@ model = DEFAULT_MODEL
 
 # Home directory of the user
 HOME_PATH = Path.home()
-DOTENV_PATH = HOME_PATH / "__keys__"
-DOTENV_VALUES = dotenv_values(DOTENV_PATH)
-openai.api_key = DOTENV_VALUES["OPENAI_API_KEY"]
+KEYS_YAML_PATH = HOME_PATH / "__keys__.yaml"
 
 
 class ChatGptKernel(IPythonKernel):
@@ -53,6 +50,9 @@ class ChatGptKernel(IPythonKernel):
         if code.strip() == "":
             # We could early return
             pass
+
+        keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text())
+        openai.api_key = keys_yaml_values["OPENAI_API_KEY"]
 
         as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
