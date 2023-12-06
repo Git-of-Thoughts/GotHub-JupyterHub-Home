@@ -134,7 +134,12 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/markdown": f"{code}\n**ChatGPT {OPENAI_MODEL}:**",
+                        "text/markdown": f"""
+                            <details>
+                                <summary>ChatGPT {OPENAI_MODEL}</summary>
+                                {code}\n**ChatGPT {OPENAI_MODEL}:**"
+                            </details>
+                        """
                     },
                 }
                 self.send_response(
