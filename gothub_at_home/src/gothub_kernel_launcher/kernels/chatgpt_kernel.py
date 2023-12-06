@@ -156,7 +156,7 @@ summary::-webkit-details-marker {{
     display: none;
 }}
 </style>
-<>
+<details>
     <summary>
         You said:
         <span class="icon">👇</span>
