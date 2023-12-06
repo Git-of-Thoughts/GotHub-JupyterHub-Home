@@ -101,15 +101,18 @@ class ChatGptKernel(IPythonKernel):
                 code = code[as_new_chat_match.start(1) :]
 
                 self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
-                self.execution_count = 0
 
-                return self.do_execute(
+                result = self.do_execute(
                     code,
                     silent,
                     store_history,
                     user_expressions,
                     allow_stdin,
                 )
+
+                self.execution_count = 0
+
+                return result
 
             with_gpt_3_5_regex = r"^\s*with\s+(?:gpt|gpt-)3.5(\s*$|\s+\S)"
             with_gpt_4_regex = r"^\s*with\s+(?:gpt|gpt-)4(\s*$|\s+\S)"
