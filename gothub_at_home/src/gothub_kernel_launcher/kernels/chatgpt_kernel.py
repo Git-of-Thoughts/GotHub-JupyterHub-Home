@@ -133,7 +133,13 @@ class ChatGptKernel(IPythonKernel):
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/html": f"<b>ChatGPT {OPENAI_MODEL}:</b>",
+                        "text/html": f"""
+<b>ChatGPT {OPENAI_MODEL}:</b>
+<button type="button" class="collapsible">Open Collapsible</button>
+<div class="content">
+    <p>Lorem ipsum...</p>
+</div>
+""",
                     },
                 }
                 self.send_response(
