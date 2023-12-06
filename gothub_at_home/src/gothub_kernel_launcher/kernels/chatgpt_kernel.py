@@ -135,10 +135,36 @@ class ChatGptKernel(IPythonKernel):
                     "data": {
                         "text/html": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
-<button type="button" class="collapsible">Open Collapsible</button>
-<div class="content">
-    <p>Lorem ipsum...</p>
-</div>
+<style>
+details {{
+    user-select: none;
+}}
+details>summary span.icon {{
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s;
+    margin-left: auto;
+}}
+details[open] summary span.icon {{
+    transform: rotate(180deg);
+}}
+summary {{
+    display: flex;
+    cursor: pointer;
+}}
+summary::-webkit-details-marker {{
+    display: none;
+}}
+</style>
+<details>
+    <summary>
+        What is the meaning of life?
+        <span class="icon">👇</span>
+    </summary>
+    <p>
+        42
+    </p>
+</details>
 """,
                     },
                 }
