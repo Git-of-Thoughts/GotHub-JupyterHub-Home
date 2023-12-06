@@ -10,12 +10,11 @@ from yaml import safe_load
 from .errors import GothubKernelError
 
 # Model
-DEFAULT_OPENAI_MODEL = "gpt-4"
 DEFAULT_SYSTEM_PROMPT = """\
 """
 
 
-OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
 
 # Home directory of the user
@@ -69,10 +68,15 @@ class ChatGptKernel(IPythonKernel):
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text()) or {}
             openai.api_key = keys_yaml_values.get("OPENAI_API_KEY")
 
+            global OPENAI_MODEL
+
             as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end() :]
+
+                got.OPENAI_MODEL = OPENAI_MODEL
+
                 return super().do_execute(
                     code,
                     silent,
@@ -81,8 +85,6 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            global OPENAI_MODEL
-
             with_gpt_3_5_regex = r"^\s*with\s+(gpt|gpt-)3.5\s*"
             with_gpt_4_regex = r"^\s*with\s+(gpt|gpt-)4\s*"
 
@@ -90,7 +92,7 @@ class ChatGptKernel(IPythonKernel):
                 code = code[with_gpt_3_5_match.end() :]
 
                 OPENAI_MODEL = "gpt-3.5-turbo"
-                got.OPENAI_MODEL = "gpt-3.5-turbo"
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 result = self.do_execute(
                     code,
@@ -100,8 +102,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
                 return result
 
@@ -109,7 +110,7 @@ class ChatGptKernel(IPythonKernel):
                 code = code[with_gpt_4_match.end() :]
 
                 OPENAI_MODEL = "gpt-4"
-                got.OPENAI_MODEL = "gpt-4"
+                got.OPENAI_MODEL = OPENAI_MODEL
 
                 result = self.do_execute(
                     code,
@@ -119,8 +120,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
                 return result
 
