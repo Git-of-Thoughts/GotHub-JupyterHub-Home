@@ -135,6 +135,8 @@ class ChatGptKernel(IPythonKernel):
                     "data": {
                         "text/html": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
+<script type="module" src="https://md-block.verou.me/md-block.js"></script>
+<p>An HTML paragraph containing <md-span>*italic*</md-span> text.</p>
 <style>
 details {{
     user-select: none;
