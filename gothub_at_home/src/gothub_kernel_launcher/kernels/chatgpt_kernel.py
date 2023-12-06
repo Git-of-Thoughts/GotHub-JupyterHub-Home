@@ -173,8 +173,8 @@ summary::-webkit-details-marker {{
                 stream_content = {
                     "metadata": {},
                     "data": {
-                        "text/markdown": f"""
-{code}
+                        "text/html": f"""
+                        <div markdown="1">{code}</div>
 """,
                     },
                 }
