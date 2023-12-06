@@ -75,7 +75,7 @@ def ask(
         )
 
     except openai.error.AuthenticationError as e:
-        msg = "Please set OPENAI_API_KEY in $HOME/__keys__.yaml."
+        msg = "Please set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
         raise openai.error.AuthenticationError(msg) from e
 
     return result

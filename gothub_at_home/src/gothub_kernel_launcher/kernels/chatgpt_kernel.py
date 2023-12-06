@@ -62,7 +62,7 @@ class ChatGptKernel(IPythonKernel):
 
             if not KEYS_YAML_PATH.exists():
                 raise KeysYamlNotFoundError(
-                    "Please set OPENAI_API_KEY in $HOME/__keys__.yaml.",
+                    "Please set a valid OPENAI_API_KEY in $HOME/__keys__.yaml.",
                 )
 
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text()) or {}
@@ -158,7 +158,7 @@ class ChatGptKernel(IPythonKernel):
                     )
 
         except openai.error.AuthenticationError as e:
-            msg = "\n\nPlease set OPENAI_API_KEY in $HOME/__keys__.yaml."
+            msg = "\n\nPlease set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
             return super().do_execute(
                 f"raise Exception({repr(repr(e))} + {repr(msg)})",
                 silent,
