@@ -151,21 +151,20 @@ class ChatGptKernel(IPythonKernel):
                     stream_content,
                 )
 
-                self.chat_messages = (
-                    self.chat_messages
-                    + [
-                        {
-                            "role": "user",
-                            "content": code,
-                        },
-                    ],
-                )
+                self.chat_messages = self.chat_messages + [
+                    {
+                        "role": "user",
+                        "content": code,
+                    },
+                ]
 
                 response = openai.ChatCompletion.create(
                     model=got.OPENAI_MODEL,
                     messages=self.chat_messages,
                     stream=True,
                 )
+
+                all_outputs = []
                 for res in response:
                     output = "".join(
                         [
@@ -175,6 +174,9 @@ class ChatGptKernel(IPythonKernel):
                             for choice in res["choices"]
                         ]
                     )
+
+                    all_outputs.append(output)
+
                     stream_content = {
                         "name": "stdout",
                         "text": output,
@@ -184,6 +186,13 @@ class ChatGptKernel(IPythonKernel):
                         "stream",
                         stream_content,
                     )
+
+                self.chat_messages = self.chat_messages + [
+                    {
+                        "role": "assistant",
+                        "content": "".join(all_outputs),
+                    },
+                ]
 
         except openai.error.AuthenticationError as e:
             msg = "\n\nPlease set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
