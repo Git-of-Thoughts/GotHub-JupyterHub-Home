@@ -76,7 +76,7 @@ class ChatGptKernel(IPythonKernel):
                 code = code[as_code_match.end() :]
 
                 # ! This is pretty important
-                got.OPENAI_MODEL = OPENAI_MODEL
+                # got.OPENAI_MODEL = OPENAI_MODEL
 
                 return super().do_execute(
                     code,
