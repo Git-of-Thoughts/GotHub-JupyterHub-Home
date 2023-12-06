@@ -101,6 +101,7 @@ class ChatGptKernel(IPythonKernel):
                 code = code[as_new_chat_match.start(1) :]
 
                 self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
+                self.execution_count = 0
 
                 return self.do_execute(
                     code,
