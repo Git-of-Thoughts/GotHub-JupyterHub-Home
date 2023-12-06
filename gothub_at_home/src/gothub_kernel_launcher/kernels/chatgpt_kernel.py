@@ -135,7 +135,10 @@ class ChatGptKernel(IPythonKernel):
                     "data": {
                         "text/html": f"""
 <b>ChatGPT {OPENAI_MODEL}:</b>
+
+<script src="prism.js"></script>
 <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+
 <style>
 details {{
     user-select: none;
