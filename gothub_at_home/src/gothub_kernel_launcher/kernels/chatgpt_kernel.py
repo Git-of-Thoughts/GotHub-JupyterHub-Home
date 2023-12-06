@@ -14,6 +14,13 @@ from .errors import GothubKernelError
 DEFAULT_SYSTEM_PROMPT = """\
 """
 
+DEFAULT_CHAT_MESSAGES_START = (
+    {
+        "role": "system",
+        "content": DEFAULT_SYSTEM_PROMPT,
+    },
+)
+
 
 # Home directory of the user
 HOME_PATH = Path.home()
@@ -49,12 +56,7 @@ class ChatGptKernel(IPythonKernel):
         super().__init__(*args, **kwargs)
 
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-        self.chat_messages = [
-            {
-                "role": "system",
-                "content": DEFAULT_SYSTEM_PROMPT,
-            },
-        ]
+        self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
     def do_execute(
         self,
@@ -81,6 +83,19 @@ class ChatGptKernel(IPythonKernel):
             got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
             new_chat_regex = r"^\s*new\s+chat(\s*$|\s+\S)"
+
+            if new_chat_match := re.match(new_chat_regex, code):
+                code = code[new_chat_match.end() :]
+
+                self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
+
+                return self.do_execute(
+                    code,
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
 
             as_code_regex = r"^\s*as\s+(code|py|python)(\s*$|\s+\S)"
 
