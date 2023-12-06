@@ -95,10 +95,10 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            new_chat_regex = r"^\s*as\s+new\s+chat(\s*$|\s+\S)"
+            as_new_chat_regex = r"^\s*as\s+new\s+chat(\s*$|\s+\S)"
 
-            if new_chat_match := re.match(new_chat_regex, code):
-                code = code[new_chat_match.start(1) :]
+            if as_new_chat_match := re.match(as_new_chat_regex, code):
+                code = code[as_new_chat_match.start(1) :]
 
                 self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
