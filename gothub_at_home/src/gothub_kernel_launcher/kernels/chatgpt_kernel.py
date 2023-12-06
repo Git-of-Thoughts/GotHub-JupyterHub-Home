@@ -66,7 +66,7 @@ class ChatGptKernel(IPythonKernel):
                 )
 
             keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text())
-            openai.api_key = keys_yaml_values["OPENAI_API_KEY"]
+            openai.api_key = keys_yaml_values.get("OPENAI_API_KEY")
 
             as_code_regex = r"^\s*as\s+(code|py|python)\s+"
 
