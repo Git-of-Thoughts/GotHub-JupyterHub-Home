@@ -100,8 +100,8 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                # OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+                # got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
                 return result
 
@@ -119,8 +119,8 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-                OPENAI_MODEL = DEFAULT_OPENAI_MODEL
-                got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
+                # OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+                # got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
                 return result
 
