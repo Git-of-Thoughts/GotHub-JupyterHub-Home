@@ -195,13 +195,10 @@ class ChatGptKernel(IPythonKernel):
                 allow_stdin,
             )
 
-        execution_count = self.execution_count
-        self.execution_count += 1
-
         return {
             "status": "ok",
             # The base class increments the execution count
-            "execution_count": execution_count,
+            "execution_count": self.execution_count,
             "payload": [],
             "user_expressions": {},
         }
