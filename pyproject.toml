@@ -1,5 +1,5 @@
 [project]
-name = "gothub_at_home"        # Required
+name = "gothub_home"           # Required
 version = "0.0.1"              # Required
 description = "GotHub at home" # Optional
 readme = "README.md"           # Optional
