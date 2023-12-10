@@ -2,11 +2,11 @@
     "argv": [
         "/srv/conda/envs/notebook/bin/python",
         "-m",
-        "ipykernel_launcher",
+        "gothub_kernel_launcher",
         "-f",
         "{connection_file}"
     ],
-    "display_name": "Python 3 (ipykernel)",
+    "display_name": "ChatGPT 3.5",
     "language": "python",
     "metadata": {
         "debugger": true
