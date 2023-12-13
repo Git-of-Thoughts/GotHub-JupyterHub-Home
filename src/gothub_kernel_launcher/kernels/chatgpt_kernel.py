@@ -7,7 +7,12 @@ from pathlib import Path
 import got
 import openai
 import requests
-from google.cloud.firestore import Increment
+from google.cloud.firestore import (
+    SERVER_TIMESTAMP as FirestoreServerTimestamp,
+)
+from google.cloud.firestore import (
+    Increment as FirestoreIncrement,
+)
 from ipykernel.ipkernel import IPythonKernel
 
 from .configs import (
@@ -139,12 +144,23 @@ class ChatGptKernel(IPythonKernel):
                 # We could early return
                 pass
 
-            chat_record = self.chat_record_doc.get(
-                token=firebase.firebase_user["idToken"],
-            )
-            self.__print_markdown(
-                f"```json\n{json.dumps(chat_record.to_dict(), indent=4)}\n```"
-            )
+            try:
+                chat_record = self.chat_record_doc.get(
+                    token=firebase.firebase_user["idToken"],
+                )
+                self.__print_markdown(
+                    f"```json\n{json.dumps(chat_record.to_dict(), indent=4)}\n```"
+                )
+            except requests.HTTPError as e:
+                chat_record = self.chat_record_doc.set(
+                    {
+                        "created_at": FirestoreServerTimestamp,
+                        "updated_at": FirestoreServerTimestamp,
+                        "num_chats": 0,
+                        "num_characters": 0,
+                    },
+                    token=firebase.firebase_user["idToken"],
+                )
 
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
@@ -308,11 +324,11 @@ class ChatGptKernel(IPythonKernel):
                 "chat_records",
             ).document(
                 firebase.user_id,
-            ).collection(
-                "chats",
-            ).add(
+            ).update(
                 {
-                    "num_characters": Increment(len(final_output)),
+                    "updated_at": FirestoreServerTimestamp,
+                    "num_chats": FirestoreIncrement(1),
+                    "num_characters": FirestoreIncrement(len(final_output)),
                 },
                 firebase.firebase_user["idToken"],
             )
