@@ -22,7 +22,7 @@ def super_king_debug(self):
             "ref_path": ref_path,
             "messages": "hello there",
         },
-        timeout=1,
+        timeout=SERVER_TIMEOUT,
     )
     chat_request.raise_for_status()
 
