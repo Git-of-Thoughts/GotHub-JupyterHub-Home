@@ -94,10 +94,10 @@ class ChatGptKernel(IPythonKernel):
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
-    def __print(self, s):
+    def __print(self, obj):
         stream_content = {
             "name": "stdout",
-            "text": s,
+            "text": str(obj),
         }
         self.send_response(
             self.iopub_socket,
@@ -105,10 +105,10 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
-    def __print_error(self, s):
+    def __print_error(self, obj):
         stream_content = {
             "name": "stderr",
-            "text": s,
+            "text": str(obj),
         }
         self.send_response(
             self.iopub_socket,
@@ -116,11 +116,11 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
-    def __print_markdown(self, s):
+    def __print_markdown(self, markdown: str):
         stream_content = {
             "metadata": {},
             "data": {
-                "text/markdown": s,
+                "text/markdown": markdown,
             },
         }
         self.send_response(
