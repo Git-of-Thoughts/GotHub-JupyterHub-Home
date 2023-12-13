@@ -67,16 +67,11 @@ def ask(
     prompt: str = "",
     model: str | None = None,
 ) -> str:
-    try:
-        result = _ask(
-            question=question,
-            system_prompt=system_prompt,
-            prompt=prompt,
-            model=model,
-        )
-
-    except openai.error.AuthenticationError as e:
-        msg = "Please set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
-        raise openai.error.AuthenticationError(msg) from e
+    result = _ask(
+        question=question,
+        system_prompt=system_prompt,
+        prompt=prompt,
+        model=model,
+    )
 
     return result
