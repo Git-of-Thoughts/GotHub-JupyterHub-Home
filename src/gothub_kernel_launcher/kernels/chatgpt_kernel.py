@@ -29,7 +29,7 @@ _my_firebase_password_response = requests.get(
     },
 )
 _my_firebase_password_response.raise_for_status()
-_my_firebase_password_json = _my_firebase_password_response.json()
+_my_firebase_password_json = _my_firebase_password_response.text
 FIREBASE_USER = _my_firebase_password_json
 
 
