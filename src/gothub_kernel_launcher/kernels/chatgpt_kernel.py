@@ -278,16 +278,24 @@ class ChatGptKernel(IPythonKernel):
                     ]
                 )
 
+                self.__print(output)
                 all_outputs.append(output)
 
-                self.__print(output)
+            final_output = "".join(all_outputs)
 
             self.chat_messages = self.chat_messages + [
                 {
                     "role": "assistant",
-                    "content": "".join(all_outputs),
+                    "content": final_output,
                 },
             ]
+
+            firebase.firestore.collection("chat_records").document(self.user_id).update(
+                {
+                    "num_chats": firebase.firestore.Increment(1),
+                    "num_characters": firebase.firestore.Increment(len(final_output)),
+                }
+            )
 
         except Exception as e:
             return super().do_execute(
