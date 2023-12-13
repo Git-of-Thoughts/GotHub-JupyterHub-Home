@@ -15,6 +15,7 @@ def super_king_debug(self):
     )
 
     ref_path = f"{user_folder}/{child_key['name']}"
+    self._ChatGptKernel__print(ref_path)
 
     chat_request = requests.post(
         server_sub_url("chat"),
