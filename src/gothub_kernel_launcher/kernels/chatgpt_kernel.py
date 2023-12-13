@@ -11,6 +11,7 @@ from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
 
 from .errors import GothubKernelError
+from .utils import firebase
 
 # Server
 SERVER_URL = "https://gothub-flask.vercel.app"
@@ -19,6 +20,20 @@ SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
 
 
 GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
+
+
+_my_firebase_password_response = requests.get(
+    SERVER_MY_FIREBASE_PASSWORD_URL,
+    headers={
+        "GotHub-API-Key": GOTHUB_API_KEY,
+    },
+)
+_my_firebase_password_response.raise_for_status()
+_my_firebase_password_json = _my_firebase_password_response.json()
+FIREBASE_USER = firebase.auth.sign_in_with_email_and_password(
+    _my_firebase_password_json["email"],
+    _my_firebase_password_json["password"],
+)
 
 
 # Model
@@ -114,31 +129,10 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            print_firebase_password_regex = r"^\s*print\s+firebase\s+password\s*$"
-            if re.match(print_firebase_password_regex, code):
-                my_firebase_password_response = requests.get(
-                    SERVER_MY_FIREBASE_PASSWORD_URL,
-                    headers={
-                        "GotHub-API-Key": GOTHUB_API_KEY,
-                    },
-                )
-                my_firebase_password_response.raise_for_status()
-                my_firebase_password = my_firebase_password_response.text
-
-                stream_content = {
-                    "metadata": {},
-                    "data": {
-                        "text/markdown": my_firebase_password,
-                    },
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "display_data",
-                    stream_content,
-                )
-
-                return super().do_execute(
-                    "None",
+            print_firebase_regex = r"^\s*print\s+firebase\s*$"
+            if re.match(print_firebase_regex, code):
+                return self.do_execute(
+                    f"as code: {FIREBASE_USER}",
                     silent,
                     store_history,
                     user_expressions,
