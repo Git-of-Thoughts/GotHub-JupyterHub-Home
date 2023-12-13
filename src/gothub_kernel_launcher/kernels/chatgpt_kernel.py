@@ -5,10 +5,17 @@ from pathlib import Path
 
 import got
 import openai
+import requests
 from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
 
 from .errors import GothubKernelError
+
+# Server
+SERVER_URL = "https://gothub-flask.vercel.app"
+SERVER_WHO_AM_I_URL = f"{SERVER_URL}/who-am-i"
+SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
+
 
 # Model
 DEFAULT_SYSTEM_PROMPT = """\
@@ -72,8 +79,24 @@ class ChatGptKernel(IPythonKernel):
                 pass
 
             print_account_regex = r"^\s*print\s+account\s*$"
-            if print_account_match := re.match(print_account_regex, code):
-                print(os.environ["GOTHUB_API_KEY"])
+            if re.match(print_account_regex, code):
+                gothub_api_key = os.environ["GOTHUB_API_KEY"]
+                who_am_i_response = requests.get(
+                    SERVER_WHO_AM_I_URL,
+                    headers={
+                        "GotHub-API-Key": gothub_api_key,
+                    },
+                )
+                who_am_i_response.raise_for_status()
+                who_am_i = who_am_i_response.json()
+
+                return self.do_execute(
+                    f"as code: {who_am_i}",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
 
             if not KEYS_YAML_PATH.exists():
                 raise KeysYamlNotFoundError(
