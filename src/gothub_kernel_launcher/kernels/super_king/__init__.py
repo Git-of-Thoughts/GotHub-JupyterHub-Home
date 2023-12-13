@@ -5,6 +5,10 @@ from gothub_kernel_launcher.kernels.utils import firebase
 
 
 def super_king_debug(self):
+    pass
+
+
+def chat_through_firebase_realtime_db(self):
     user_folder = f"/chat/{self.user_id}"
 
     child_key = firebase.db.child(
