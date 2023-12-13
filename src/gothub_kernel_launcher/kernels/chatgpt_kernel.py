@@ -94,6 +94,17 @@ class ChatGptKernel(IPythonKernel):
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
+    def __print(self, s):
+        stream_content = {
+            "name": "stdout",
+            "text": s,
+        }
+        self.send_response(
+            self.iopub_socket,
+            "stream",
+            stream_content,
+        )
+
     def do_execute(
         self,
         code: str,
