@@ -1,6 +1,6 @@
 import requests
 
-from gothub_kernel_launcher.kernels.configs import server_sub_url
+from gothub_kernel_launcher.kernels.configs import SERVER_TIMEOUT, server_sub_url
 from gothub_kernel_launcher.kernels.utils import firebase
 
 
@@ -16,17 +16,15 @@ def super_king_debug(self):
 
     ref_path = f"{user_folder}/{child_key['name']}"
 
-    try:
-        requests.post(
-            server_sub_url("chat"),
-            json={
-                "ref_path": ref_path,
-                "messages": "super king debug",
-            },
-            timeout=0.01,
-        )
-    except requests.exceptions.ReadTimeout:
-        pass
+    chat_request = requests.post(
+        server_sub_url("chat"),
+        json={
+            "ref_path": ref_path,
+            "messages": "super king debug",
+        },
+        timeout=SERVER_TIMEOUT,
+    )
+    chat_request.raise_for_status()
 
     def callback(event):
         self._ChatGptKernel__print(str(event))

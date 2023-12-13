@@ -12,7 +12,7 @@ from yaml import safe_load
 
 from .configs import (
     SERVER_LOGIN_NUM_ATTEMPTS,
-    SERVER_LOGIN_TIMEOUT,
+    SERVER_TIMEOUT,
     server_sub_url,
 )
 from .errors import GothubKernelError
@@ -73,7 +73,7 @@ class ChatGptKernel(IPythonKernel):
                     headers={
                         "GotHub-API-Key": self.gothub_api_key,
                     },
-                    timeout=SERVER_LOGIN_TIMEOUT,
+                    timeout=SERVER_TIMEOUT,
                 )
                 my_firebase_password_response.raise_for_status()
                 my_firebase_password_json = my_firebase_password_response.json()
@@ -149,7 +149,7 @@ class ChatGptKernel(IPythonKernel):
                     headers={
                         "GotHub-API-Key": self.gothub_api_key,
                     },
-                    timeout=SERVER_LOGIN_TIMEOUT,
+                    timeout=SERVER_TIMEOUT,
                 )
                 who_am_i_response.raise_for_status()
                 who_am_i = who_am_i_response.json()

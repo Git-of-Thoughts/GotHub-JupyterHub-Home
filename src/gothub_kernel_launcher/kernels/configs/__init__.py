@@ -6,4 +6,4 @@ def server_sub_url(sub_url):
 
 
 SERVER_LOGIN_NUM_ATTEMPTS = 3
-SERVER_LOGIN_TIMEOUT = 5
+SERVER_TIMEOUT = 5
