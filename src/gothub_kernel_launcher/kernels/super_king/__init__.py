@@ -8,6 +8,6 @@ def super_king_debug(self):
         server_sub_url("chat"),
         json={
             "user_id": self.user_id,
-            "message": "super king debug",
+            "messages": "super king debug",
         },
     )
