@@ -7,9 +7,6 @@ from gothub_kernel_launcher.kernels.utils import firebase
 def super_king_debug(self):
     user_folder = f"/chat/{self.user_id}"
 
-    def callback(event):
-        self._ChatGptKernel__print(str(event))
-
     child_key = firebase.db.child(
         user_folder,
     ).push(
@@ -27,6 +24,9 @@ def super_king_debug(self):
         },
     )
     response.raise_for_status()
+
+    def callback(event):
+        self._ChatGptKernel__print(str(event))
 
     firebase.db.child(
         ref_path,
