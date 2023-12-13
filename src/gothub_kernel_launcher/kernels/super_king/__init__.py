@@ -9,7 +9,7 @@ tmp = None
 def super_king_debug(self):
     global tmp
 
-    self.__ChatGptKernel_print(str(tmp))
+    self._ChatGptKernel__print(str(tmp))
 
     response = requests.post(
         server_sub_url("chat"),
