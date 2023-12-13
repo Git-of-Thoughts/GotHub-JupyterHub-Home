@@ -3,17 +3,18 @@ import requests
 from gothub_kernel_launcher.kernels.configs import server_sub_url
 from gothub_kernel_launcher.kernels.utils import firebase
 
+tmp = None
+
 
 def super_king_debug(self):
-    self.super_king_debug_res = (
-        self.super_king_debug_res if self.super_king_debug_res else None
-    )
+    global tmp
+
     self.send_response(
         self.iopub_socket,
         "stream",
         {
             "name": "stdout",
-            "text": str(self.super_king_debug_res),
+            "text": str(tmp),
         },
     )
 
@@ -30,6 +31,7 @@ def super_king_debug(self):
     ref_path = response_json["ref_path"]
 
     def callback(event):
-        self.super_king_debug_res = event
+        global tmp
+        tmp = event
 
     firebase.db.child(ref_path).stream(callback)
