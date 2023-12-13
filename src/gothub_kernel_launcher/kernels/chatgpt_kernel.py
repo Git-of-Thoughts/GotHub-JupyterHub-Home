@@ -294,7 +294,8 @@ class ChatGptKernel(IPythonKernel):
                 {
                     "num_chats": firebase.firestore.Increment(1),
                     "num_characters": firebase.firestore.Increment(len(final_output)),
-                }
+                },
+                self.firebase_user["idToken"],
             )
 
         except Exception as e:
