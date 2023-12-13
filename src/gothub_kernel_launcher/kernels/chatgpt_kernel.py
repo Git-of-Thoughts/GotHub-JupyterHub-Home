@@ -10,21 +10,14 @@ import requests
 from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
 
+from .configs import (
+    SERVER_LOGIN_NUM_ATTEMPTS,
+    SERVER_LOGIN_TIMEOUT,
+    server_sub_url,
+)
 from .errors import GothubKernelError
 from .super_king import super_king_debug
 from .utils import firebase
-
-# Server
-SERVER_URL = "https://gothub-flask.vercel.app"
-
-
-def server_sub_url(sub_url):
-    return f"{SERVER_URL}/{sub_url}"
-
-
-SERVER_LOGIN_NUM_ATTEMPTS = 3
-SERVER_LOGIN_TIMEOUT = 5
-
 
 # Model
 DEFAULT_SYSTEM_PROMPT = """\
