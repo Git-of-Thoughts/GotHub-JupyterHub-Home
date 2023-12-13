@@ -17,5 +17,5 @@ config = {
 app = firebase.initialize_app(config)
 
 
-# Firebase Authentication
 auth = app.auth()
+db = app.database()
