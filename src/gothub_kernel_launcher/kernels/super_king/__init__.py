@@ -5,6 +5,18 @@ from gothub_kernel_launcher.kernels.utils import firebase
 
 
 def super_king_debug(self):
+    self.super_king_debug_res = (
+        self.super_king_debug_res if self.super_king_debug_res else None
+    )
+    self.send_response(
+        self.iopub_socket,
+        "stream",
+        {
+            "name": "stdout",
+            "text": str(self.super_king_debug_res),
+        },
+    )
+
     response = requests.post(
         server_sub_url("chat"),
         json={
@@ -18,13 +30,6 @@ def super_king_debug(self):
     ref_path = response_json["ref_path"]
 
     def callback(event):
-        self.send_response(
-            self.iopub_socket,
-            "stream",
-            {
-                "name": "stdout",
-                "text": event,
-            },
-        )
+        self.super_king_debug_res = event
 
-    firebase.db.child(ref_path).stream(callback, is_async=False)
+    firebase.db.child(ref_path).stream(callback)
