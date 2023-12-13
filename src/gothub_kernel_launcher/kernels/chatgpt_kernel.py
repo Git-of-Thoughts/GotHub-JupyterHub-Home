@@ -7,6 +7,7 @@ from pathlib import Path
 import got
 import openai
 import requests
+from google.cloud.firestore import Increment
 from ipykernel.ipkernel import IPythonKernel
 
 from .configs import (
@@ -294,8 +295,8 @@ class ChatGptKernel(IPythonKernel):
                 firebase.user_id,
             ).update(
                 {
-                    "num_chats": firebase.firestore.Increment(1),
-                    "num_characters": firebase.firestore.Increment(len(final_output)),
+                    "num_chats": Increment(1),
+                    "num_characters": Increment(len(final_output)),
                 },
                 firebase.firebase_user["idToken"],
             )

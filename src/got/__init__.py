@@ -1,4 +1,5 @@
 import openai
+from google.cloud.firestore import Increment
 from gothub_kernel_launcher.kernels.utils import firebase
 
 from .utils import bold
@@ -79,8 +80,8 @@ def ask(
         firebase.user_id,
     ).update(
         {
-            "num_chats": firebase.firestore.Increment(1),
-            "num_characters": firebase.firestore.Increment(len(final_output)),
+            "num_chats": Increment(1),
+            "num_characters": Increment(len(final_output)),
         },
         firebase.firebase_user["idToken"],
     )
