@@ -142,6 +142,13 @@ class ChatGptKernel(IPythonKernel):
             super_king_debug_regex = r"^\s*super king debug\s*$"
             if re.match(super_king_debug_regex, code):
                 super_king_debug(self)
+                return super().do_execute(
+                    "None",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
 
             if not KEYS_YAML_PATH.exists():
                 raise KeysYamlNotFoundError(
