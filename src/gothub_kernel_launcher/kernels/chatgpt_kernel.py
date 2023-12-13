@@ -19,7 +19,7 @@ SERVER_WHO_AM_I_URL = f"{SERVER_URL}/whoami"
 SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
 
 
-GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
+# GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
 
 
 # _my_firebase_password_response = requests.get(
@@ -99,7 +99,7 @@ class ChatGptKernel(IPythonKernel):
                 who_am_i_response = requests.get(
                     SERVER_WHO_AM_I_URL,
                     headers={
-                        "GotHub-API-Key": GOTHUB_API_KEY,
+                        "GotHub-API-Key": os.environ["GOTHUB_API_KEY"],
                     },
                 )
                 who_am_i_response.raise_for_status()
