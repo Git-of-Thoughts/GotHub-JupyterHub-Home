@@ -75,7 +75,9 @@ def ask(
         model=model,
     )
 
-    firebase.firestore.collection("chat_records").document(firebase.user_id).update(
+    firebase.firestore.collection("chat_records").document(
+        firebase.user_id,
+    ).update(
         {
             "num_chats": firebase.firestore.Increment(1),
             "num_characters": firebase.firestore.Increment(len(final_output)),

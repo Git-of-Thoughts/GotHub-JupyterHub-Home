@@ -290,12 +290,14 @@ class ChatGptKernel(IPythonKernel):
                 },
             ]
 
-            firebase.firestore.collection("chat_records").document(self.user_id).update(
+            firebase.firestore.collection("chat_records").document(
+                firebase.user_id,
+            ).update(
                 {
                     "num_chats": firebase.firestore.Increment(1),
                     "num_characters": firebase.firestore.Increment(len(final_output)),
                 },
-                self.firebase_user["idToken"],
+                firebase.firebase_user["idToken"],
             )
 
         except Exception as e:
