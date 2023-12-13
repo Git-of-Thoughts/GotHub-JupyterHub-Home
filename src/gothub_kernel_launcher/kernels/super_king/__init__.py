@@ -34,12 +34,12 @@ def chat_through_firebase_realtime_db(self: "ChatGptKernel"):
     )
 
     ref_path = f"{user_folder}/{child_key['name']}"
-    self._ChatGptKernel__print(ref_path)
+    self._gothub_print(ref_path)
 
     # TODO chat_request
 
     def callback(event):
-        self._ChatGptKernel__print(str(event))
+        self._gothub_print(str(event))
 
     firebase.db.child(
         ref_path,

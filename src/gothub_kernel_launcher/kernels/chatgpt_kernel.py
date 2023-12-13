@@ -90,7 +90,7 @@ class ChatGptKernel(IPythonKernel):
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
-    def __print(self, obj):
+    def _gothub_print(self, obj):
         stream_content = {
             "name": "stdout",
             "text": str(obj),
@@ -101,7 +101,7 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
-    def __print_error(self, obj):
+    def _gothub_print_error(self, obj):
         stream_content = {
             "name": "stderr",
             "text": str(obj),
@@ -112,7 +112,7 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
-    def __print_markdown(self, markdown: str):
+    def _gothub_print_markdown(self, markdown: str):
         stream_content = {
             "metadata": {},
             "data": {
@@ -191,7 +191,7 @@ class ChatGptKernel(IPythonKernel):
                 who_am_i = who_am_i_response.json()
                 who_am_i_pretty = json.dumps(who_am_i, indent=4)
 
-                self.__print_markdown(f"```json\n{who_am_i_pretty}\n```")
+                self._gothub_print_markdown(f"```json\n{who_am_i_pretty}\n```")
 
                 return super().do_execute(
                     "None",
@@ -298,7 +298,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            self.__print_markdown(f"**ChatGPT {got.OPENAI_MODEL}:**")
+            self._gothub_print_markdown(f"**ChatGPT {got.OPENAI_MODEL}:**")
 
             self.chat_messages = self.chat_messages + [
                 {
@@ -324,7 +324,7 @@ class ChatGptKernel(IPythonKernel):
                     ]
                 )
 
-                self.__print(output)
+                self._gothub_print(output)
                 all_outputs.append(output)
 
             final_output = "".join(all_outputs)
