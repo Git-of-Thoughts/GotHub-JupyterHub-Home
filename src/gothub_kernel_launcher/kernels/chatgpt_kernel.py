@@ -18,6 +18,9 @@ SERVER_WHO_AM_I_URL = f"{SERVER_URL}/whoami"
 SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
 
 
+GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
+
+
 # Model
 DEFAULT_SYSTEM_PROMPT = """\
 """
@@ -81,11 +84,10 @@ class ChatGptKernel(IPythonKernel):
 
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
-                gothub_api_key = os.environ["GOTHUB_API_KEY"]
                 who_am_i_response = requests.get(
                     SERVER_WHO_AM_I_URL,
                     headers={
-                        "GotHub-API-Key": gothub_api_key,
+                        "GotHub-API-Key": GOTHUB_API_KEY,
                     },
                 )
                 who_am_i_response.raise_for_status()
@@ -96,6 +98,37 @@ class ChatGptKernel(IPythonKernel):
                     "metadata": {},
                     "data": {
                         "text/markdown": f"```json\n{who_am_i_pretty}\n```",
+                    },
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "display_data",
+                    stream_content,
+                )
+
+                return super().do_execute(
+                    "None",
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
+
+            print_firebase_password_regex = r"^\s*print\s+firebase\s+password\s*$"
+            if re.match(print_firebase_password_regex, code):
+                my_firebase_password_response = requests.get(
+                    SERVER_MY_FIREBASE_PASSWORD_URL,
+                    headers={
+                        "GotHub-API-Key": GOTHUB_API_KEY,
+                    },
+                )
+                my_firebase_password_response.raise_for_status()
+                my_firebase_password = my_firebase_password_response.text
+
+                stream_content = {
+                    "metadata": {},
+                    "data": {
+                        "text/markdown": my_firebase_password,
                     },
                 }
                 self.send_response(
