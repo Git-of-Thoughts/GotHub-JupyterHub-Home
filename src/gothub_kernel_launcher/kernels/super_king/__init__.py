@@ -26,5 +26,6 @@ def super_king_debug(self):
         {
             "user_id": self.user_id,
             "messages": "super king debug",
-        }
+        },
+        self.firebase_user["idToken"],
     ).stream(callback, is_async=False)
