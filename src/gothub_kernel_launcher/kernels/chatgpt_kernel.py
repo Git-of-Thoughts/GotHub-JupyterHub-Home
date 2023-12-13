@@ -8,7 +8,6 @@ import got
 import openai
 import requests
 from ipykernel.ipkernel import IPythonKernel
-from yaml import safe_load
 
 from .configs import (
     SERVER_LOGIN_NUM_ATTEMPTS,
@@ -29,17 +28,6 @@ DEFAULT_CHAT_MESSAGES_START = (
         "content": DEFAULT_SYSTEM_PROMPT,
     },
 )
-
-
-# Home directory of the user
-HOME_PATH = Path.home()
-KEYS_YAML_PATH = HOME_PATH / "__keys__.yaml"
-
-
-class KeysYamlNotFoundError(GothubKernelError):
-    """Raised when __keys__.yaml is not found in $HOME."""
-
-    pass
 
 
 class ChatGptKernel(IPythonKernel):
@@ -85,6 +73,8 @@ class ChatGptKernel(IPythonKernel):
         self.user_name = my_firebase_password_json["name"]
         self.user_email = my_firebase_password_json["email"]
         self.user_password = my_firebase_password_json["password"]
+
+        openai.api_key = my_firebase_password_json["OPENAI_API_KEY"]
 
         self.firebase_user = firebase.auth.sign_in_with_email_and_password(
             self.user_email,
@@ -176,14 +166,6 @@ class ChatGptKernel(IPythonKernel):
                     user_expressions,
                     allow_stdin,
                 )
-
-            if not KEYS_YAML_PATH.exists():
-                raise KeysYamlNotFoundError(
-                    "Please set a valid OPENAI_API_KEY in $HOME/__keys__.yaml.",
-                )
-
-            keys_yaml_values = safe_load(KEYS_YAML_PATH.read_text()) or {}
-            openai.api_key = keys_yaml_values.get("OPENAI_API_KEY")
 
             # ! This is pretty important
             got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
@@ -306,16 +288,6 @@ class ChatGptKernel(IPythonKernel):
                     "content": "".join(all_outputs),
                 },
             ]
-
-        except openai.error.AuthenticationError as e:
-            msg = "\n\nPlease set a valid OPENAI_API_KEY in $HOME/__keys__.yaml."
-            return super().do_execute(
-                f"raise Exception({repr(repr(e))} + {repr(msg)})",
-                silent,
-                store_history,
-                user_expressions,
-                allow_stdin,
-            )
 
         except Exception as e:
             return super().do_execute(
