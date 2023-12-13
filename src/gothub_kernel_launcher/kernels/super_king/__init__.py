@@ -27,4 +27,4 @@ def super_king_debug(self):
             },
         )
 
-    firebase.db.child(ref_path).stream(callback)
+    firebase.db.child(ref_path).stream(callback, is_async=False)
