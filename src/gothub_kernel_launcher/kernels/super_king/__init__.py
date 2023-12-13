@@ -17,19 +17,21 @@ def super_king_debug(self):
         self.firebase_user["idToken"],
     )
 
+    ref_path = f"{user_folder}/{child_key['name']}"
+
+    response = requests.post(
+        server_sub_url("chat"),
+        json={
+            "ref_path": ref_path,
+            "messages": "super king debug",
+        },
+    )
+    response.raise_for_status()
+
     firebase.db.child(
-        f"{user_folder}/{child_key['name']}",
+        ref_path,
     ).stream(
         callback,
         self.firebase_user["idToken"],
+        is_async=False,
     )
-
-    # response = requests.post(
-    #         server_sub_url("chat"),
-    #         json={
-    #             "event": event,
-    #             "messages": "super king debug",
-    #         },
-    #     )
-    #     response.raise_for_status()
-    #     response_json = response.json()
