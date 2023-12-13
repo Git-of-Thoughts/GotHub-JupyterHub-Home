@@ -11,6 +11,7 @@ from ipykernel.ipkernel import IPythonKernel
 from yaml import safe_load
 
 from .errors import GothubKernelError
+from .super_king import super_king_debug
 from .utils import firebase
 
 # Server
@@ -137,15 +138,9 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            print_firebase_regex = r"^\s*print\s+firebase\s*$"
-            if re.match(print_firebase_regex, code):
-                return self.do_execute(
-                    f"as code: {self.firebase_user}",
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
-                )
+            super_king_debug_regex = r"^\s*super king debug\s*$"
+            if re.match(super_king_debug_regex, code):
+                super_king_debug()
 
             if not KEYS_YAML_PATH.exists():
                 raise KeysYamlNotFoundError(
