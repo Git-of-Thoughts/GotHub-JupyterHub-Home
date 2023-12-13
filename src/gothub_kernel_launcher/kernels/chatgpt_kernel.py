@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import sys
@@ -89,6 +90,19 @@ class ChatGptKernel(IPythonKernel):
                 )
                 who_am_i_response.raise_for_status()
                 who_am_i = who_am_i_response.json()
+                who_am_i_pretty = json.dumps(who_am_i, indent=4)
+
+                stream_content = {
+                    "metadata": {},
+                    "data": {
+                        "text/markdown": f"```json\n{who_am_i_pretty}\n```",
+                    },
+                }
+                self.send_response(
+                    self.iopub_socket,
+                    "display_data",
+                    stream_content,
+                )
 
                 return self.do_execute(
                     f"as code: {who_am_i}",
