@@ -82,6 +82,18 @@ class ChatGptKernel(IPythonKernel):
             firebase.user_password,
         )
 
+        chat_record = (
+            firebase.firestore.collection(
+                "chat_records",
+            )
+            .document(
+                firebase.user_id,
+            )
+            .get(
+                token=firebase.firebase_user["idToken"],
+            )
+        )
+
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
@@ -291,11 +303,14 @@ class ChatGptKernel(IPythonKernel):
                 },
             ]
 
-            firebase.firestore.collection("chat_records").document(
+            firebase.firestore.collection(
+                "chat_records",
+            ).document(
                 firebase.user_id,
-            ).set(
+            ).collection(
+                "chats",
+            ).add(
                 {
-                    "num_chats": Increment(1),
                     "num_characters": Increment(len(final_output)),
                 },
                 firebase.firebase_user["idToken"],
