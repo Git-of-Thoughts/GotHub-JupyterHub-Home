@@ -21,13 +21,16 @@ def super_king_debug(self):
     def callback(event):
         self._ChatGptKernel__print(str(event))
 
-    child_key = firebase.db.child(user_folder).push(
+    child_key = firebase.db.child(
+        user_folder,
+    ).push(
         "super king debug",
         self.firebase_user["idToken"],
     )
-    self._ChatGptKernel__print(child_key)
 
-    firebase.db.child(f"{user_folder}/{child_key['name']}").stream(
+    firebase.db.child(
+        f"{user_folder}/{child_key['name']}",
+    ).stream(
         callback,
         self.firebase_user["idToken"],
         is_async=False,
