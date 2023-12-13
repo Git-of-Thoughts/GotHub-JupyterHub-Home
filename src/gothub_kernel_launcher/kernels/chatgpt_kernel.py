@@ -154,7 +154,7 @@ class ChatGptKernel(IPythonKernel):
                 if chat_record["num_chats"] > 10:
                     raise PleaseUpgradePlan(
                         "You have reached the usage limit for the free plan. "
-                        "Please upgrade to a paid plan: "
+                        "Please upgrade: "
                         "https://gothub-gpt.webflow.io/pricing"
                     )
 
