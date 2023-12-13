@@ -3,14 +3,8 @@ import requests
 from gothub_kernel_launcher.kernels.configs import server_sub_url
 from gothub_kernel_launcher.kernels.utils import firebase
 
-tmp = None
-
 
 def super_king_debug(self):
-    global tmp
-
-    self._ChatGptKernel__print(str(tmp))
-
     response = requests.post(
         server_sub_url("chat"),
         json={
@@ -24,7 +18,6 @@ def super_king_debug(self):
     ref_path = response_json["ref_path"]
 
     def callback(event):
-        global tmp
-        tmp = event
+        self._ChatGptKernel__print(str(event))
 
-    firebase.db.child(ref_path).stream(callback)
+    firebase.db.child(ref_path).stream(callback, is_async=False)
