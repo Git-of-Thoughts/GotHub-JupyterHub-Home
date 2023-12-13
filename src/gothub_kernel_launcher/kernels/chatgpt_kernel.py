@@ -20,7 +20,7 @@ from .configs import (
     SERVER_TIMEOUT,
     server_sub_url,
 )
-from .errors import GothubKernelError
+from .errors import PleaseUpgradePlan
 from .super_king import super_king_debug
 from .utils import firebase
 
@@ -150,6 +150,14 @@ class ChatGptKernel(IPythonKernel):
                         token=firebase.firebase_user["idToken"],
                     )
                 )
+
+                if chat_record["num_chats"] > 10:
+                    raise PleaseUpgradePlan(
+                        "You have reached the usage limit for the free plan. "
+                        "Please upgrade to a paid plan: "
+                        "https://gothub-gpt.webflow.io/pricing"
+                    )
+
             except requests.HTTPError as e:
                 chat_record = (
                     firebase.firestore.collection(
