@@ -20,7 +20,7 @@ def super_king_debug(self):
         server_sub_url("chat"),
         json={
             "ref_path": ref_path,
-            "messages": "super king debug",
+            "messages": "hello there",
         },
         timeout=1,
     )
