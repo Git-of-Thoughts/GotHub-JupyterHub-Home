@@ -151,7 +151,7 @@ class ChatGptKernel(IPythonKernel):
                     )
                 )
 
-                if chat_record["num_chats"] > 10:
+                if chat_record["num_chats"] >= 1000:
                     raise PleaseUpgradePlan(
                         "You have reached the usage limit for the free plan. "
                         "Please upgrade: "
