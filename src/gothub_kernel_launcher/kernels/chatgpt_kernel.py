@@ -82,16 +82,10 @@ class ChatGptKernel(IPythonKernel):
             firebase.user_password,
         )
 
-        chat_record = (
-            firebase.firestore.collection(
-                "chat_records",
-            )
-            .document(
-                firebase.user_id,
-            )
-            .get(
-                token=firebase.firebase_user["idToken"],
-            )
+        self.chat_record_doc = firebase.firestore.collection(
+            "chat_records",
+        ).document(
+            firebase.user_id,
         )
 
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
@@ -144,6 +138,13 @@ class ChatGptKernel(IPythonKernel):
             if code.strip() == "":
                 # We could early return
                 pass
+
+            chat_record = self.chat_record_doc.get(
+                token=firebase.firebase_user["idToken"],
+            )
+            self.__print_markdown(
+                f"```json\n{json.dumps(chat_record.to_dict(), indent=4)}\n```"
+            )
 
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
