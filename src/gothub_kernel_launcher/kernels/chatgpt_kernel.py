@@ -105,6 +105,30 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
+    def __print_error(self, s):
+        stream_content = {
+            "name": "stderr",
+            "text": s,
+        }
+        self.send_response(
+            self.iopub_socket,
+            "stream",
+            stream_content,
+        )
+
+    def __print_markdown(self, s):
+        stream_content = {
+            "metadata": {},
+            "data": {
+                "text/markdown": s,
+            },
+        }
+        self.send_response(
+            self.iopub_socket,
+            "display_data",
+            stream_content,
+        )
+
     def do_execute(
         self,
         code: str,
@@ -125,22 +149,13 @@ class ChatGptKernel(IPythonKernel):
                     headers={
                         "GotHub-API-Key": self.gothub_api_key,
                     },
+                    timeout=SERVER_LOGIN_TIMEOUT,
                 )
                 who_am_i_response.raise_for_status()
                 who_am_i = who_am_i_response.json()
                 who_am_i_pretty = json.dumps(who_am_i, indent=4)
 
-                stream_content = {
-                    "metadata": {},
-                    "data": {
-                        "text/markdown": f"```json\n{who_am_i_pretty}\n```",
-                    },
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "display_data",
-                    stream_content,
-                )
+                self.__print_markdown(f"```json\n{who_am_i_pretty}\n```")
 
                 return super().do_execute(
                     "None",
@@ -153,6 +168,7 @@ class ChatGptKernel(IPythonKernel):
             super_king_debug_regex = r"^\s*super king debug\s*$"
             if re.match(super_king_debug_regex, code):
                 super_king_debug(self)
+
                 return super().do_execute(
                     "None",
                     silent,
@@ -254,17 +270,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            stream_content = {
-                "metadata": {},
-                "data": {
-                    "text/markdown": f"**ChatGPT {got.OPENAI_MODEL}:**",
-                },
-            }
-            self.send_response(
-                self.iopub_socket,
-                "display_data",
-                stream_content,
-            )
+            self.__print_markdown(f"**ChatGPT {got.OPENAI_MODEL}:**")
 
             self.chat_messages = self.chat_messages + [
                 {
@@ -292,15 +298,7 @@ class ChatGptKernel(IPythonKernel):
 
                 all_outputs.append(output)
 
-                stream_content = {
-                    "name": "stdout",
-                    "text": output,
-                }
-                self.send_response(
-                    self.iopub_socket,
-                    "stream",
-                    stream_content,
-                )
+                self.__print(output)
 
             self.chat_messages = self.chat_messages + [
                 {
