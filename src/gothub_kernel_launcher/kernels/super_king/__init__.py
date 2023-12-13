@@ -9,14 +9,7 @@ tmp = None
 def super_king_debug(self):
     global tmp
 
-    self.send_response(
-        self.iopub_socket,
-        "stream",
-        {
-            "name": "stdout",
-            "text": str(tmp),
-        },
-    )
+    self.__print(str(tmp))
 
     response = requests.post(
         server_sub_url("chat"),
