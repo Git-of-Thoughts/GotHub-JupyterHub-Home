@@ -13,7 +13,9 @@ def super_king_debug(self: "ChatGptKernel"):
     stream_content = {
         "metadata": {},
         "data": {
-            "text/html": '<iframe src="https://wikipedia.com/"></iframe>',
+            "text/html": """
+                <iframe src="https://wikipedia.com/" width="100%" height="100%" />
+            """,
         },
     }
     self.send_response(
