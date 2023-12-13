@@ -29,8 +29,11 @@ _my_firebase_password_response = requests.get(
     },
 )
 _my_firebase_password_response.raise_for_status()
-_my_firebase_password_json = _my_firebase_password_response.text
-FIREBASE_USER = _my_firebase_password_json
+_my_firebase_password_json = _my_firebase_password_response.json()
+FIREBASE_USER = firebase.auth.sign_in_with_email_and_password(
+    _my_firebase_password_json["email"],
+    _my_firebase_password_json["password"],
+)
 
 
 # Model
