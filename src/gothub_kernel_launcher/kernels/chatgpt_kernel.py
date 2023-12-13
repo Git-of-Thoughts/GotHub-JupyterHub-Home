@@ -13,7 +13,7 @@ from .errors import GothubKernelError
 
 # Server
 SERVER_URL = "https://gothub-flask.vercel.app"
-SERVER_WHO_AM_I_URL = f"{SERVER_URL}/who-am-i"
+SERVER_WHO_AM_I_URL = f"{SERVER_URL}/whoami"
 SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
 
 
