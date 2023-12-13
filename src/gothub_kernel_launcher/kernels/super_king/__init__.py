@@ -20,7 +20,7 @@ def super_king_debug(self):
     def callback(event):
         self._ChatGptKernel__print(str(event))
 
-    firebase.db.child(
+    child_key = firebase.db.child(
         f"/chat/{self.user_id}",
     ).push(
         {
@@ -28,4 +28,7 @@ def super_king_debug(self):
             "messages": "super king debug",
         },
         self.firebase_user["idToken"],
-    ).stream(callback, is_async=False)
+    )
+    self._ChatGptKernel__print(child_key)
+
+    # .stream(callback, is_async=False)
