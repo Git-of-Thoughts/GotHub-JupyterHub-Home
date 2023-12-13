@@ -28,7 +28,7 @@ _my_firebase_password_response = requests.get(
         "GotHub-API-Key": GOTHUB_API_KEY,
     },
 )
-# _my_firebase_password_response.raise_for_status()
+_my_firebase_password_response.raise_for_status()
 # _my_firebase_password_json = _my_firebase_password_response.json()
 # FIREBASE_USER = _my_firebase_password_json
 
