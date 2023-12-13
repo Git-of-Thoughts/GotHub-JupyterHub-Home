@@ -1,5 +1,10 @@
 import openai
-from google.cloud.firestore import Increment
+from google.cloud.firestore import (
+    SERVER_TIMESTAMP as FirestoreServerTimestamp,
+)
+from google.cloud.firestore import (
+    Increment as FirestoreIncrement,
+)
 from gothub_kernel_launcher.kernels.utils import firebase
 
 from .utils import bold
@@ -76,12 +81,15 @@ def ask(
         model=model,
     )
 
-    firebase.firestore.collection("chat_records").document(
+    firebase.firestore.collection(
+        "chat_records",
+    ).document(
         firebase.user_id,
-    ).set(
+    ).update(
         {
-            "num_chats": Increment(1),
-            "num_characters": Increment(len(final_output)),
+            "updated_at": FirestoreServerTimestamp,
+            "num_chats": FirestoreIncrement(1),
+            "num_characters": FirestoreIncrement(len(final_output)),
         },
         firebase.firebase_user["idToken"],
     )
