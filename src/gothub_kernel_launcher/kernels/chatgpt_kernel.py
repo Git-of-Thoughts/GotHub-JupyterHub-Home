@@ -150,9 +150,6 @@ class ChatGptKernel(IPythonKernel):
                         token=firebase.firebase_user["idToken"],
                     )
                 )
-                self.__print_markdown(
-                    f"```json\n{json.dumps(chat_record, indent=4)}\n```"
-                )
             except requests.HTTPError as e:
                 chat_record = (
                     firebase.firestore.collection(
