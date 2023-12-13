@@ -163,7 +163,8 @@ class ChatGptKernel(IPythonKernel):
                             "created_at": FirestoreServerTimestamp,
                             "updated_at": FirestoreServerTimestamp,
                             "num_chats": 0,
-                            "num_characters": 0,
+                            "num_characters_in": 0,
+                            "num_characters_out": 0,
                         },
                         token=firebase.firebase_user["idToken"],
                     )
@@ -335,7 +336,8 @@ class ChatGptKernel(IPythonKernel):
                 {
                     "updated_at": FirestoreServerTimestamp,
                     "num_chats": FirestoreIncrement(1),
-                    "num_characters": FirestoreIncrement(len(final_output)),
+                    "num_characters_in": FirestoreIncrement(len(code)),
+                    "num_characters_out": FirestoreIncrement(len(final_output)),
                 },
                 firebase.firebase_user["idToken"],
             )

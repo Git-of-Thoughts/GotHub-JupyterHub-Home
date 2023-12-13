@@ -64,7 +64,23 @@ def _ask(
         print(output, end="")
     print("\n")
 
-    return "".join(all_outputs)
+    final_output = "".join(all_outputs)
+
+    firebase.firestore.collection(
+        "chat_records",
+    ).document(
+        firebase.user_id,
+    ).update(
+        {
+            "updated_at": FirestoreServerTimestamp,
+            "num_chats": FirestoreIncrement(1),
+            "num_characters_in": FirestoreIncrement(len(user_prompt)),
+            "num_characters_out": FirestoreIncrement(len(final_output)),
+        },
+        firebase.firebase_user["idToken"],
+    )
+
+    return final_output
 
 
 def ask(
@@ -79,19 +95,6 @@ def ask(
         system_prompt=system_prompt,
         prompt=prompt,
         model=model,
-    )
-
-    firebase.firestore.collection(
-        "chat_records",
-    ).document(
-        firebase.user_id,
-    ).update(
-        {
-            "updated_at": FirestoreServerTimestamp,
-            "num_chats": FirestoreIncrement(1),
-            "num_characters": FirestoreIncrement(len(final_output)),
-        },
-        firebase.firebase_user["idToken"],
     )
 
     return final_output
