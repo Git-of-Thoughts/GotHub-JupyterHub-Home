@@ -19,18 +19,21 @@ SERVER_WHO_AM_I_URL = f"{SERVER_URL}/whoami"
 SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
 
 
-# GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
+GOTHUB_API_KEY = os.environ["GOTHUB_API_KEY"]
 
 
-# _my_firebase_password_response = requests.get(
-#     SERVER_MY_FIREBASE_PASSWORD_URL,
-#     headers={
-#         "GotHub-API-Key": GOTHUB_API_KEY,
-#     },
-# )
-# _my_firebase_password_response.raise_for_status()
-# _my_firebase_password_json = _my_firebase_password_response.json()
-# FIREBASE_USER = _my_firebase_password_json
+_my_firebase_password_response = requests.get(
+    SERVER_MY_FIREBASE_PASSWORD_URL,
+    headers={
+        "GotHub-API-Key": GOTHUB_API_KEY,
+    },
+)
+_my_firebase_password_response.raise_for_status()
+_my_firebase_password_json = _my_firebase_password_response.json()
+FIREBASE_USER = firebase.auth.sign_in_with_email_and_password(
+    _my_firebase_password_json["email"],
+    _my_firebase_password_json["password"],
+)
 
 
 # Model
@@ -99,7 +102,7 @@ class ChatGptKernel(IPythonKernel):
                 who_am_i_response = requests.get(
                     SERVER_WHO_AM_I_URL,
                     headers={
-                        "GotHub-API-Key": os.environ["GOTHUB_API_KEY"],
+                        "GotHub-API-Key": GOTHUB_API_KEY,
                     },
                 )
                 who_am_i_response.raise_for_status()
@@ -129,7 +132,7 @@ class ChatGptKernel(IPythonKernel):
             print_firebase_regex = r"^\s*print\s+firebase\s*$"
             if re.match(print_firebase_regex, code):
                 return self.do_execute(
-                    f"as code: {None}",
+                    f"as code: {FIREBASE_USER}",
                     silent,
                     store_history,
                     user_expressions,
