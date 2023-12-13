@@ -29,8 +29,8 @@ _my_firebase_password_response = requests.get(
     },
 )
 _my_firebase_password_response.raise_for_status()
-# _my_firebase_password_json = _my_firebase_password_response.json()
-# FIREBASE_USER = _my_firebase_password_json
+_my_firebase_password_json = _my_firebase_password_response.json()
+FIREBASE_USER = _my_firebase_password_json
 
 
 # Model
@@ -129,7 +129,7 @@ class ChatGptKernel(IPythonKernel):
             print_firebase_regex = r"^\s*print\s+firebase\s*$"
             if re.match(print_firebase_regex, code):
                 return self.do_execute(
-                    f"as code: {None}",
+                    f"as code: {FIREBASE_USER}",
                     silent,
                     store_history,
                     user_expressions,
