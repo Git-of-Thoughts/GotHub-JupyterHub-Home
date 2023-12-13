@@ -16,8 +16,11 @@ from .utils import firebase
 
 # Server
 SERVER_URL = "https://gothub-flask.vercel.app"
-SERVER_WHO_AM_I_URL = f"{SERVER_URL}/whoami"
-SERVER_MY_FIREBASE_PASSWORD_URL = f"{SERVER_URL}/my-firebase-password"
+
+
+def server_sub_url(sub_url):
+    return f"{SERVER_URL}/{sub_url}"
+
 
 SERVER_LOGIN_NUM_ATTEMPTS = 3
 SERVER_LOGIN_TIMEOUT = 5
@@ -73,7 +76,7 @@ class ChatGptKernel(IPythonKernel):
         for _ in range(SERVER_LOGIN_NUM_ATTEMPTS):
             try:
                 my_firebase_password_response = requests.get(
-                    SERVER_MY_FIREBASE_PASSWORD_URL,
+                    server_sub_url("my-firebase-password"),
                     headers={
                         "GotHub-API-Key": self.gothub_api_key,
                     },
@@ -109,7 +112,7 @@ class ChatGptKernel(IPythonKernel):
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
                 who_am_i_response = requests.get(
-                    SERVER_WHO_AM_I_URL,
+                    server_sub_url("whoami"),
                     headers={
                         "GotHub-API-Key": self.gothub_api_key,
                     },
@@ -140,7 +143,7 @@ class ChatGptKernel(IPythonKernel):
 
             super_king_debug_regex = r"^\s*super king debug\s*$"
             if re.match(super_king_debug_regex, code):
-                super_king_debug()
+                super_king_debug(self)
 
             if not KEYS_YAML_PATH.exists():
                 raise KeysYamlNotFoundError(

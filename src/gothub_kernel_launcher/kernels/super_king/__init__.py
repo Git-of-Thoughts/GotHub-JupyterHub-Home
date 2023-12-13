@@ -1,2 +1,2 @@
-def super_king_debug():
+def super_king_debug(self):
     pass
