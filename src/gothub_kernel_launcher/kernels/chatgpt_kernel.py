@@ -104,8 +104,8 @@ class ChatGptKernel(IPythonKernel):
                     stream_content,
                 )
 
-                return self.do_execute(
-                    f"as code: {who_am_i}",
+                return super().do_execute(
+                    "None",
                     silent,
                     store_history,
                     user_expressions,
