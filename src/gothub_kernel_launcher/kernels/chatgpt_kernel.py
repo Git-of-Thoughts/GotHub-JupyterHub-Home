@@ -69,16 +69,16 @@ class ChatGptKernel(IPythonKernel):
             except requests.exceptions.Timeout:
                 pass
 
-        self.user_id = my_firebase_password_json["id"]
-        self.user_name = my_firebase_password_json["name"]
-        self.user_email = my_firebase_password_json["email"]
-        self.user_password = my_firebase_password_json["password"]
+        firebase.user_id = my_firebase_password_json["id"]
+        firebase.user_name = my_firebase_password_json["name"]
+        firebase.user_email = my_firebase_password_json["email"]
+        firebase.user_password = my_firebase_password_json["password"]
 
         openai.api_key = my_firebase_password_json["OPENAI_API_KEY"]
 
-        self.firebase_user = firebase.auth.sign_in_with_email_and_password(
-            self.user_email,
-            self.user_password,
+        firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
+            firebase.user_email,
+            firebase.user_password,
         )
 
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL

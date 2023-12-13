@@ -1,4 +1,5 @@
 import openai
+from gothub_kernel_launcher.kernels.utils import firebase
 
 from .utils import bold
 
@@ -67,11 +68,19 @@ def ask(
     prompt: str = "",
     model: str | None = None,
 ) -> str:
-    result = _ask(
+    final_output = _ask(
         question=question,
         system_prompt=system_prompt,
         prompt=prompt,
         model=model,
     )
 
-    return result
+    firebase.firestore.collection("chat_records").document(firebase.user_id).update(
+        {
+            "num_chats": firebase.firestore.Increment(1),
+            "num_characters": firebase.firestore.Increment(len(final_output)),
+        },
+        firebase.firebase_user["idToken"],
+    )
+
+    return final_output

@@ -20,3 +20,11 @@ app = firebase.initialize_app(config)
 auth = app.auth()
 db = app.database()
 firestore = app.firestore()
+
+
+# From user
+user_id = None
+user_name = None
+user_email = None
+user_password = None
+firebase_user: dict = {}
