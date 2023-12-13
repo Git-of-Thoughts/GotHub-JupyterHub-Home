@@ -17,6 +17,8 @@ def super_king_debug(self):
     ref_path = f"{user_folder}/{child_key['name']}"
     self._ChatGptKernel__print(ref_path)
 
+    # TODO chat_request
+
     def callback(event):
         self._ChatGptKernel__print(str(event))
 
