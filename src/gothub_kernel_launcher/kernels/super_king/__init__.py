@@ -17,16 +17,6 @@ def super_king_debug(self):
     ref_path = f"{user_folder}/{child_key['name']}"
     self._ChatGptKernel__print(ref_path)
 
-    chat_request = requests.post(
-        server_sub_url("chat"),
-        json={
-            "ref_path": ref_path,
-            "messages": "hello there",
-        },
-        timeout=SERVER_TIMEOUT,
-    )
-    chat_request.raise_for_status()
-
     def callback(event):
         self._ChatGptKernel__print(str(event))
 
