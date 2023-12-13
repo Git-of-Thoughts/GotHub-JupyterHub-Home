@@ -5,6 +5,7 @@ from gothub_kernel_launcher.kernels.utils import firebase
 
 
 def super_king_debug(self):
+    user_folder = f"/chat/{self.user_id}"
     # response = requests.post(
     #     server_sub_url("chat"),
     #     json={
@@ -20,15 +21,14 @@ def super_king_debug(self):
     def callback(event):
         self._ChatGptKernel__print(str(event))
 
-    child_key = firebase.db.child(
-        f"/chat/{self.user_id}",
-    ).push(
-        {
-            "user_id": self.user_id,
-            "messages": "super king debug",
-        },
+    child_key = firebase.db.child(user_folder).push(
+        "super king debug",
         self.firebase_user["idToken"],
     )
     self._ChatGptKernel__print(child_key)
 
-    # .stream(callback, is_async=False)
+    firebase.db.child(f"{user_folder}/{child_key['name']}").stream(
+        callback,
+        self.firebase_user["idToken"],
+        is_async=False,
+    )
