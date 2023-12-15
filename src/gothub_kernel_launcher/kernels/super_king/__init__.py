@@ -15,9 +15,6 @@ def super_king_debug(self: "ChatGptKernel"):
         "data": {
             "text/html": """
                 <iframe src="https://bruno-simon.com/" width="100%" height="800" />
-                <script type="text/javascript">
-                    console.log("hello world");
-                </script>
             """,
         },
     }
