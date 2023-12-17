@@ -316,12 +316,7 @@ class ChatGptKernel(IPythonKernel):
             all_outputs = []
             for res in response:
                 output = "".join(
-                    [
-                        choice["delta"]["content"]
-                        if "content" in choice["delta"]
-                        else ""
-                        for choice in res["choices"]
-                    ]
+                    [choice.delta.content or "" for choice in res.choices],
                 )
 
                 self._gothub_print(output)

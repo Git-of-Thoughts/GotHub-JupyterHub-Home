@@ -56,10 +56,7 @@ def _ask(
     all_outputs = []
     for res in response:
         output = "".join(
-            [
-                choice["delta"]["content"] if "content" in choice["delta"] else ""
-                for choice in res["choices"]
-            ]
+            [choice.delta.content or "" for choice in res.choices],
         )
 
         all_outputs.append(output)
