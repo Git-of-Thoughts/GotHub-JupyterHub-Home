@@ -15,7 +15,7 @@ DEFAULT_OPENAI_MODEL = "gpt-4"
 OPENAI_MODEL = DEFAULT_OPENAI_MODEL
 
 
-client = OpenAI()
+client: OpenAI = None
 
 
 def _ask(
