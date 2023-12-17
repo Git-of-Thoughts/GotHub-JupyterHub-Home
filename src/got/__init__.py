@@ -1,4 +1,3 @@
-import openai
 from google.cloud.firestore import (
     SERVER_TIMESTAMP as FirestoreServerTimestamp,
 )
@@ -6,6 +5,7 @@ from google.cloud.firestore import (
     Increment as FirestoreIncrement,
 )
 from gothub_kernel_launcher.kernels.utils import firebase
+from openai import OpenAI
 
 from .utils import bold
 
@@ -13,6 +13,9 @@ DEFAULT_OPENAI_MODEL = "gpt-4"
 
 
 OPENAI_MODEL = DEFAULT_OPENAI_MODEL
+
+
+client = OpenAI()
 
 
 def _ask(
@@ -33,7 +36,7 @@ def _ask(
     user_prompt = question or prompt
     model = model or OPENAI_MODEL
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model=model,
         messages=[  # TODO use system messages
             {

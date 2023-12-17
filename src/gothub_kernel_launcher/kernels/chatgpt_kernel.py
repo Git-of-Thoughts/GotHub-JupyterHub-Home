@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 
 import got
-import openai
 import requests
 from google.cloud.firestore import (
     SERVER_TIMESTAMP as FirestoreServerTimestamp,
@@ -14,6 +13,7 @@ from google.cloud.firestore import (
     Increment as FirestoreIncrement,
 )
 from ipykernel.ipkernel import IPythonKernel
+from openai import OpenAI
 
 from .configs import (
     SERVER_LOGIN_NUM_ATTEMPTS,
@@ -80,7 +80,9 @@ class ChatGptKernel(IPythonKernel):
         firebase.user_email = my_firebase_password_json["email"]
         firebase.user_password = my_firebase_password_json["password"]
 
-        openai.api_key = my_firebase_password_json["OPENAI_API_KEY"]
+        got.client = OpenAI(
+            api_key=my_firebase_password_json["OPENAI_API_KEY"],
+        )
 
         firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
             firebase.user_email,
@@ -307,10 +309,8 @@ class ChatGptKernel(IPythonKernel):
                 },
             ]
 
-            response = openai.ChatCompletion.create(
-                model=got.OPENAI_MODEL,
-                messages=self.chat_messages,
-                stream=True,
+            response = got.client.chat.completions.create(
+                model=got.OPENAI_MODEL, messages=self.chat_messages, stream=True
             )
 
             all_outputs = []
