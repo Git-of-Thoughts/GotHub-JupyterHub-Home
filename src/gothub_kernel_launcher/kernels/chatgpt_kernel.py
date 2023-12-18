@@ -80,8 +80,12 @@ class ChatGptKernel(IPythonKernel):
         firebase.user_email = my_firebase_password_json["email"]
         firebase.user_password = my_firebase_password_json["password"]
 
-        got.client = OpenAI(
+        got.openai_client = OpenAI(
             api_key=my_firebase_password_json["OPENAI_API_KEY"],
+        )
+        got.together_client = OpenAI(
+            api_key=my_firebase_password_json["TOGETHER_API_KEY"],
+            base_url="https://api.together.xyz",
         )
 
         firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
