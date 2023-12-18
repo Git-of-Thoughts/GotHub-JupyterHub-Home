@@ -90,7 +90,7 @@ def _ask(
 
         all_outputs.append(output)
 
-        print(output, end="")
+        print(output, end="", flush=True)
     print("\n")
 
     final_output = "".join(all_outputs)
