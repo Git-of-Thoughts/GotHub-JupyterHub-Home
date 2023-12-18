@@ -330,7 +330,7 @@ class ChatGptKernel(IPythonKernel):
                 },
             ]
 
-            response = got.client.chat.completions.create(
+            response = got.get_client().chat.completions.create(
                 model=got.OPENAI_MODEL,
                 messages=self.chat_messages,
                 stream=True,

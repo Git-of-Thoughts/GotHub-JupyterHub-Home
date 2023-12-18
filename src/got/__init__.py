@@ -15,7 +15,18 @@ DEFAULT_OPENAI_MODEL = "gpt-4"
 OPENAI_MODEL = DEFAULT_OPENAI_MODEL
 
 
-client: OpenAI = None
+openai_client: OpenAI = None
+together_client: OpenAI = None
+
+
+def get_client() -> OpenAI:
+    match OPENAI_MODEL:
+        case "gpt-4":
+            return openai_client
+        case "gpt-3.5-turbo":
+            return openai_client
+        case "mistralai/Mixtral-8x7B-Instruct-v0.1":
+            return together_client
 
 
 def _ask(
@@ -36,7 +47,7 @@ def _ask(
     user_prompt = question or prompt
     model = model or OPENAI_MODEL
 
-    response = client.chat.completions.create(
+    response = get_client().chat.completions.create(
         model=model,
         messages=[  # TODO use system messages
             {
