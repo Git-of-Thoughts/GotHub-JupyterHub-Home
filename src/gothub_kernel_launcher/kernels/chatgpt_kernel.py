@@ -255,6 +255,7 @@ class ChatGptKernel(IPythonKernel):
             with_gpt_3_5_regex = r"^\s*with\s+(?:gpt|gpt-)3.5(:|\s*$|\s+)"
             with_gpt_4_regex = r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)"
             with_mixtral_regex = r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)"
+            with_llama_2_regex = r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)"
 
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
                 code = code[with_gpt_3_5_match.end(1) :]
@@ -300,6 +301,26 @@ class ChatGptKernel(IPythonKernel):
                 code = code[with_mixtral_match.end(1) :]
 
                 self.OPENAI_MODEL_TO_BE_SET = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+                result = self.do_execute(
+                    code,
+                    silent,
+                    store_history,
+                    user_expressions,
+                    allow_stdin,
+                )
+
+                self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
+                # ! You can't do this (probably due to async)
+                # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+                return result
+
+            if with_llama_2_match := re.match(with_llama_2_regex, code):
+                code = code[with_llama_2_match.end(1) :]
+
+                self.OPENAI_MODEL_TO_BE_SET = "togethercomputer/llama-2-70b-chat"
                 got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
                 result = self.do_execute(
