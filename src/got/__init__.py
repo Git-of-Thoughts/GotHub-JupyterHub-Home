@@ -29,6 +29,8 @@ def get_client() -> OpenAI:
             return together_client
         case "togethercomputer/llama-2-70b-chat":
             return together_client
+        case "togethercomputer/CodeLlama-34b-Instruct":
+            return together_client
 
 
 def get_model_name() -> OpenAI:
@@ -41,6 +43,8 @@ def get_model_name() -> OpenAI:
             return "Mixtral 8x7B"
         case "togethercomputer/llama-2-70b-chat":
             return "Llama 2 (70B)"
+        case "togethercomputer/CodeLlama-34b-Instruct":
+            return "Code Llama (34B)"
 
 
 def _ask(
