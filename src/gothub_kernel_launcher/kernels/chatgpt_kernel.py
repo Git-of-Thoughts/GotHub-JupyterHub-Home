@@ -289,7 +289,7 @@ class ChatGptKernel(IPythonKernel):
                 r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)": (
                     "togethercomputer/llama-2-70b-chat"
                 ),
-                r"^\s*with\s+(?:code|code-)llama(:|\s*$|\s+)": (
+                r"^\s*with\s+(?:code-llama)(:|\s*$|\s+)": (
                     "togethercomputer/CodeLlama-34b-Instruct"
                 ),
             }
