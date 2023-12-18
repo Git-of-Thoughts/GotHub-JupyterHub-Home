@@ -29,6 +29,16 @@ def get_client() -> OpenAI:
             return together_client
 
 
+def get_model_name() -> OpenAI:
+    match OPENAI_MODEL:
+        case "gpt-4":
+            return "ChatGPT 4"
+        case "gpt-3.5-turbo":
+            return "ChatGPT 3.5"
+        case "mistralai/Mixtral-8x7B-Instruct-v0.1":
+            return "Mixtral 8x7B"
+
+
 def _ask(
     question: str = "",
     *,

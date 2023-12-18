@@ -325,7 +325,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            self._gothub_print_markdown(f"**ChatGPT {got.OPENAI_MODEL}:**")
+            self._gothub_print_markdown(f"**{got.get_model_name()}:**")
 
             self.chat_messages = self.chat_messages + [
                 {
