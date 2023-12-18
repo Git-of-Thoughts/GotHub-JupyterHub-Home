@@ -1,0 +1,14 @@
+{
+    "argv": [
+        "/srv/conda/envs/notebook/bin/python",
+        "-m",
+        "gothub_kernel_launcher_mixtral",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "Mixtral 8x7B",
+    "language": "python",
+    "metadata": {
+        "debugger": true
+    }
+}
