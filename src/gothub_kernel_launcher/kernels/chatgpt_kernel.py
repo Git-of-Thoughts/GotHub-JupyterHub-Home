@@ -131,6 +131,36 @@ class ChatGptKernel(IPythonKernel):
             stream_content,
         )
 
+    def _gothub_do_execute_with_model(
+        self,
+        code: str,
+        match: re.Match,
+        model: str,
+        *,
+        silent,
+        store_history,
+        user_expressions,
+        allow_stdin,
+    ):
+        code = code[match.end(1) :]
+
+        self.OPENAI_MODEL_TO_BE_SET = model
+        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+        result = self.do_execute(
+            code,
+            silent,
+            store_history,
+            user_expressions,
+            allow_stdin,
+        )
+
+        self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
+        # ! You can't do this (probably due to async)
+        # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+        return result
+
     def do_execute(
         self,
         code: str,
@@ -256,86 +286,62 @@ class ChatGptKernel(IPythonKernel):
             with_gpt_4_regex = r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)"
             with_mixtral_regex = r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)"
             with_llama_2_regex = r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)"
+            with_code_llama_regex = r"^\s*with\s+(?:code|code-)llama(:|\s*$|\s+)"
 
             if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
-                code = code[with_gpt_3_5_match.end(1) :]
-
-                self.OPENAI_MODEL_TO_BE_SET = "gpt-3.5-turbo"
-                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                result = self.do_execute(
+                return self._gothub_do_execute_with_model(
                     code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
+                    with_gpt_3_5_match,
+                    "gpt-3.5-turbo",
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
                 )
-
-                self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                # ! You can't do this (probably due to async)
-                # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                return result
 
             if with_gpt_4_match := re.match(with_gpt_4_regex, code):
-                code = code[with_gpt_4_match.end(1) :]
-
-                self.OPENAI_MODEL_TO_BE_SET = "gpt-4"
-                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                result = self.do_execute(
+                return self._gothub_do_execute_with_model(
                     code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
+                    with_gpt_4_match,
+                    "gpt-4",
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
                 )
-
-                self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                # ! You can't do this (probably due to async)
-                # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                return result
 
             if with_mixtral_match := re.match(with_mixtral_regex, code):
-                code = code[with_mixtral_match.end(1) :]
-
-                self.OPENAI_MODEL_TO_BE_SET = "mistralai/Mixtral-8x7B-Instruct-v0.1"
-                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                result = self.do_execute(
+                return self._gothub_do_execute_with_model(
                     code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
+                    with_mixtral_match,
+                    "mistralai/Mixtral-8x7B-Instruct-v0.1",
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
                 )
-
-                self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                # ! You can't do this (probably due to async)
-                # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                return result
 
             if with_llama_2_match := re.match(with_llama_2_regex, code):
-                code = code[with_llama_2_match.end(1) :]
-
-                self.OPENAI_MODEL_TO_BE_SET = "togethercomputer/llama-2-70b-chat"
-                got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                result = self.do_execute(
+                return self._gothub_do_execute_with_model(
                     code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
+                    with_llama_2_match,
+                    "togethercomputer/llama-2-70b-chat",
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
                 )
 
-                self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-                # ! You can't do this (probably due to async)
-                # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
-                return result
+            if with_code_llama_match := re.match(with_code_llama_regex, code):
+                return self._gothub_do_execute_with_model(
+                    code,
+                    with_code_llama_match,
+                    "togethercomputer/CodeLlama-34b-Instruct",
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
+                )
 
             if silent:
                 return super().do_execute(
