@@ -1,3 +1,5 @@
+import sys
+
 from google.cloud.firestore import (
     SERVER_TIMESTAMP as FirestoreServerTimestamp,
 )
@@ -31,9 +33,11 @@ def get_client() -> OpenAI:
             return together_client
         case "togethercomputer/CodeLlama-34b-Instruct":
             return together_client
+        case _:
+            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
-def get_model_name() -> OpenAI:
+def get_model_name() -> str:
     match OPENAI_MODEL:
         case "gpt-4":
             return "ChatGPT 4"
@@ -45,6 +49,33 @@ def get_model_name() -> OpenAI:
             return "Llama 2 (70B)"
         case "togethercomputer/CodeLlama-34b-Instruct":
             return "Code Llama (34B)"
+        case _:
+            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+
+
+def get_kwargs_for_chat_completions_create() -> dict:
+    match OPENAI_MODEL:
+        case "gpt-4":
+            return {}
+        case "gpt-3.5-turbo":
+            return {}
+        case "mistralai/Mixtral-8x7B-Instruct-v0.1":
+            return {
+                "max_tokens": sys.maxsize,
+                "stop": ["</s>"],
+            }
+        case "togethercomputer/llama-2-70b-chat":
+            return {
+                "max_tokens": sys.maxsize,
+                "stop": ["</s>"],
+            }
+        case "togethercomputer/CodeLlama-34b-Instruct":
+            return {
+                "max_tokens": sys.maxsize,
+                "stop": ["</s>"],
+            }
+        case _:
+            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
 def _ask(
@@ -78,6 +109,7 @@ def _ask(
             },
         ],
         stream=True,
+        **get_kwargs_for_chat_completions_create(),
     )
 
     print(bold(f"{get_model_name()}:"))

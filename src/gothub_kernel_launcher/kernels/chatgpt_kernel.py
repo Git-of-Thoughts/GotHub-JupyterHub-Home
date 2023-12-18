@@ -327,6 +327,7 @@ class ChatGptKernel(IPythonKernel):
                 model=got.OPENAI_MODEL,
                 messages=self.chat_messages,
                 stream=True,
+                **got.get_kwargs_for_chat_completions_create(),
             )
 
             all_outputs = []
