@@ -80,7 +80,7 @@ def _ask(
         stream=True,
     )
 
-    print(bold(f"ChatGPT {model}:"))
+    print(bold(f"{get_model_name()}:"))
 
     all_outputs = []
     for res in response:
