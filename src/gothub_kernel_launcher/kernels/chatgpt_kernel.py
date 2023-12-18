@@ -169,6 +169,9 @@ class ChatGptKernel(IPythonKernel):
         user_expressions=None,
         allow_stdin=False,
     ):
+        # ! This is pretty important
+        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
         try:
             if code.strip() == "":
                 # We could early return
@@ -249,11 +252,7 @@ class ChatGptKernel(IPythonKernel):
                     allow_stdin,
                 )
 
-            # ! This is pretty important
-            got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
             as_code_regex = r"^\s*as\s+(?:code|py|python)(:|\s*$|\s+)"
-
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end(1) :]
 
@@ -266,7 +265,6 @@ class ChatGptKernel(IPythonKernel):
                 )
 
             as_new_chat_regex = r"^\s*as\s+new\s+chat(:|\s*$|\s+)"
-
             if as_new_chat_match := re.match(as_new_chat_regex, code):
                 code = code[as_new_chat_match.end(1) :]
 
@@ -282,66 +280,30 @@ class ChatGptKernel(IPythonKernel):
 
                 return result
 
-            with_gpt_3_5_regex = r"^\s*with\s+(?:gpt|gpt-)3.5(:|\s*$|\s+)"
-            with_gpt_4_regex = r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)"
-            with_mixtral_regex = r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)"
-            with_llama_2_regex = r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)"
-            with_code_llama_regex = r"^\s*with\s+(?:code|code-)llama(:|\s*$|\s+)"
-
-            if with_gpt_3_5_match := re.match(with_gpt_3_5_regex, code):
-                return self._gothub_do_execute_with_model(
-                    code,
-                    with_gpt_3_5_match,
-                    "gpt-3.5-turbo",
-                    silent=silent,
-                    store_history=store_history,
-                    user_expressions=user_expressions,
-                    allow_stdin=allow_stdin,
-                )
-
-            if with_gpt_4_match := re.match(with_gpt_4_regex, code):
-                return self._gothub_do_execute_with_model(
-                    code,
-                    with_gpt_4_match,
-                    "gpt-4",
-                    silent=silent,
-                    store_history=store_history,
-                    user_expressions=user_expressions,
-                    allow_stdin=allow_stdin,
-                )
-
-            if with_mixtral_match := re.match(with_mixtral_regex, code):
-                return self._gothub_do_execute_with_model(
-                    code,
-                    with_mixtral_match,
-                    "mistralai/Mixtral-8x7B-Instruct-v0.1",
-                    silent=silent,
-                    store_history=store_history,
-                    user_expressions=user_expressions,
-                    allow_stdin=allow_stdin,
-                )
-
-            if with_llama_2_match := re.match(with_llama_2_regex, code):
-                return self._gothub_do_execute_with_model(
-                    code,
-                    with_llama_2_match,
-                    "togethercomputer/llama-2-70b-chat",
-                    silent=silent,
-                    store_history=store_history,
-                    user_expressions=user_expressions,
-                    allow_stdin=allow_stdin,
-                )
-
-            if with_code_llama_match := re.match(with_code_llama_regex, code):
-                return self._gothub_do_execute_with_model(
-                    code,
-                    with_code_llama_match,
-                    "togethercomputer/CodeLlama-34b-Instruct",
-                    silent=silent,
-                    store_history=store_history,
-                    user_expressions=user_expressions,
-                    allow_stdin=allow_stdin,
-                )
+            with_model_regex_to_model = {
+                r"^\s*with\s+(?:gpt|gpt-)3.5(:|\s*$|\s+)": "gpt-3.5-turbo",
+                r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)": "gpt-4",
+                r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)": (
+                    "mistralai/Mixtral-8x7B-Instruct-v0.1"
+                ),
+                r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)": (
+                    "togethercomputer/llama-2-70b-chat"
+                ),
+                r"^\s*with\s+(?:code|code-)llama(:|\s*$|\s+)": (
+                    "togethercomputer/CodeLlama-34b-Instruct"
+                ),
+            }
+            for with_model_regex, model in with_model_regex_to_model.items():
+                if with_model_match := re.match(with_model_regex, code):
+                    return self._gothub_do_execute_with_model(
+                        code,
+                        with_model_match,
+                        model,
+                        silent=silent,
+                        store_history=store_history,
+                        user_expressions=user_expressions,
+                        allow_stdin=allow_stdin,
+                    )
 
             if silent:
                 return super().do_execute(
