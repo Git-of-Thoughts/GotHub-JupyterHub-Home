@@ -85,7 +85,7 @@ class ChatGptKernel(IPythonKernel):
         )
         got.together_client = OpenAI(
             api_key=my_firebase_password_json["TOGETHER_API_KEY"],
-            base_url="https://api.together.xyz",
+            base_url="https://api.together.xyz/v1",
         )
 
         firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
