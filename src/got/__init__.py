@@ -61,17 +61,15 @@ def get_kwargs_for_chat_completions_create() -> dict:
             return {}
         case "mistralai/Mixtral-8x7B-Instruct-v0.1":
             return {
-                "max_tokens": sys.maxsize,
                 "stop": ["</s>"],
             }
         case "togethercomputer/llama-2-70b-chat":
             return {
-                "max_tokens": sys.maxsize,
                 "stop": ["</s>"],
             }
         case "togethercomputer/CodeLlama-34b-Instruct":
             return {
-                "max_tokens": sys.maxsize,
+                "max_tokens": 2048,
                 "stop": ["</s>"],
             }
         case _:
