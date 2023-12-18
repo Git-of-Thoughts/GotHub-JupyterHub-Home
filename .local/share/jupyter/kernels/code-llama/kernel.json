@@ -1,0 +1,14 @@
+{
+    "argv": [
+        "/srv/conda/envs/notebook/bin/python",
+        "-m",
+        "gothub_kernel_launcher_code_llama",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "Code Llama (34B)",
+    "language": "python",
+    "metadata": {
+        "debugger": true
+    }
+}
