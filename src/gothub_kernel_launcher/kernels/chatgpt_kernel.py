@@ -237,7 +237,7 @@ class ChatGptKernel(IPythonKernel):
         #     firebase.firebase_user["idToken"],
         # )
 
-    def _gothub_use_model(
+    def _gothub_do_execute(
         self,
         code: str,
         *,
@@ -366,7 +366,7 @@ class ChatGptKernel(IPythonKernel):
             as_code_regex = r"^\s*as\s+(?:code|py|python)(:|\s*$|\s+)"
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end(1) :]
-                return self._gothub_use_model(
+                return self._gothub_do_execute(
                     code,
                     as_code=True,
                     silent=silent,
@@ -423,7 +423,7 @@ class ChatGptKernel(IPythonKernel):
                         allow_stdin=allow_stdin,
                     )
 
-            return self._gothub_use_model(
+            return self._gothub_do_execute(
                 code,
                 as_code=False,
                 silent=silent,
