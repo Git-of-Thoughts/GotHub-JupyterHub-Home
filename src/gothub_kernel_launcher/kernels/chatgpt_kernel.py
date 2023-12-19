@@ -161,13 +161,10 @@ class ChatGptKernel(IPythonKernel):
 
         return result
 
-    def _gothub_use_model(
+    def _gothub_use_model_chat(
         self,
         code,
     ):
-        # ! This is pretty important
-        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
         self._gothub_print_markdown(f"**{got.get_model_name()}:**")
 
         self.chat_messages = self.chat_messages + [
@@ -215,6 +212,15 @@ class ChatGptKernel(IPythonKernel):
             },
             firebase.firebase_user["idToken"],
         )
+
+    def _gothub_use_model(
+        self,
+        code,
+    ):
+        # ! This is pretty important
+        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+        self._gothub_use_model_chat(code)
 
     def do_execute(
         self,
