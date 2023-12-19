@@ -53,6 +53,22 @@ def get_model_name() -> str:
             raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
+def get_model_type() -> str:
+    match OPENAI_MODEL:
+        case "gpt-4":
+            return "chat"
+        case "gpt-3.5-turbo":
+            return "chat"
+        case "mistralai/Mixtral-8x7B-Instruct-v0.1":
+            return "chat"
+        case "togethercomputer/llama-2-70b-chat":
+            return "chat"
+        case "togethercomputer/CodeLlama-34b-Instruct":
+            return "chat"
+        case _:
+            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+
+
 def get_kwargs_for_chat_completions_create() -> dict:
     match OPENAI_MODEL:
         case "gpt-4":
