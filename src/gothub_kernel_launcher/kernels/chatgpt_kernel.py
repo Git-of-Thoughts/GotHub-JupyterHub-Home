@@ -222,8 +222,9 @@ class ChatGptKernel(IPythonKernel):
 
         for image in response.data:
             url = image.url
-            caption = image.revised_prompt
-            self._gothub_print_markdown(f"![{caption}]({url})")
+            description = image.revised_prompt
+            self._gothub_print_markdown(f"![{description}]({url})")
+            self._gothub_print_markdown(f"_{description}_")
 
         # firebase.firestore.collection(
         #     "chat_records",
