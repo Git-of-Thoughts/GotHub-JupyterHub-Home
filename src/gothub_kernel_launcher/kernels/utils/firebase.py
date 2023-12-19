@@ -82,7 +82,7 @@ def get_user_records_else_create():
         try:
             image_record = (
                 firestore.collection(
-                    "chat_records",
+                    "chat_records_for_images",
                 )
                 .document(
                     user_id,
@@ -102,7 +102,7 @@ def get_user_records_else_create():
                 raise e
 
             firestore.collection(
-                "chat_records",
+                "chat_records_for_images",
             ).document(
                 user_id,
             ).set(
@@ -110,6 +110,7 @@ def get_user_records_else_create():
                     "created_at": FirestoreServerTimestamp,
                     "updated_at": FirestoreServerTimestamp,
                     "num_chats": 0,
+                    "num_images": 0,
                     "num_characters_in": 0,
                     "num_characters_out": 0,
                 },
