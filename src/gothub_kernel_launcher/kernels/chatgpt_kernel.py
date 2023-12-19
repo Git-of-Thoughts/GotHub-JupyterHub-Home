@@ -93,6 +93,7 @@ class ChatGptKernel(IPythonKernel):
             firebase.user_password,
         )
 
+        self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         self.chat_messages = list(DEFAULT_CHAT_MESSAGES_START)
 
     def _gothub_print(self, obj):
@@ -143,6 +144,7 @@ class ChatGptKernel(IPythonKernel):
     ):
         code = code[match.end(1) :]
 
+        # self.OPENAI_MODEL_TO_BE_SET = model
         got.OPENAI_MODEL = model
 
         result = self.do_execute(
@@ -153,6 +155,7 @@ class ChatGptKernel(IPythonKernel):
             allow_stdin,
         )
 
+        # self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
         got.OPENAI_MODEL = got.DEFAULT_OPENAI_MODEL
 
         return result
@@ -234,6 +237,8 @@ class ChatGptKernel(IPythonKernel):
         # )
 
     def _gothub_use_model(self, code):
+        # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
         match got.get_model_type():
             case "chat":
                 self._gothub_use_model_chat(code)
