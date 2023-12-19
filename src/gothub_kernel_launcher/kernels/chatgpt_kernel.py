@@ -220,7 +220,13 @@ class ChatGptKernel(IPythonKernel):
         # ! This is pretty important
         got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
-        self._gothub_use_model_chat(code)
+        match got.get_model_type():
+            case "chat":
+                self._gothub_use_model_chat(code)
+            case "image":
+                self._gothub_use_model_image(code)
+            case _:
+                raise NotImplementedError
 
     def do_execute(
         self,
