@@ -17,7 +17,11 @@ from .configs import (
 from .errors import PleaseUpgradePlan
 from .super_king import super_king_debug
 from .utils import firebase
-from .utils.firebase import get_user_records_else_create, update_chat_record
+from .utils.firebase import (
+    get_user_records_else_create,
+    update_chat_record,
+    update_image_record,
+)
 
 # Model
 DEFAULT_SYSTEM_PROMPT = """\
@@ -209,19 +213,7 @@ class ChatGptKernel(IPythonKernel):
             self._gothub_print_markdown(f"![{description}]({url})")
             self._gothub_print_markdown(f"> {description}")
 
-        # firebase.firestore.collection(
-        #     "chat_records",
-        # ).document(
-        #     firebase.user_id,
-        # ).update(
-        #     {
-        #         "updated_at": FirestoreServerTimestamp,
-        #         "num_chats": FirestoreIncrement(1),
-        #         "num_characters_in": FirestoreIncrement(len(code)),
-        #         "num_characters_out": FirestoreIncrement(len(final_output)),
-        #     },
-        #     firebase.firebase_user["idToken"],
-        # )
+        update_image_record(code, response)
 
     def _gothub_do_execute(
         self,

@@ -3,6 +3,7 @@ import json
 import firebase
 import requests
 from google.cloud.firestore import SERVER_TIMESTAMP, Increment
+from openai.types.images_response import ImagesResponse
 
 # Firebase configuration
 config = {
@@ -132,6 +133,26 @@ def update_chat_record(input: str, output: str):
             "num_chats": Increment(1),
             "num_characters_in": Increment(len(input)),
             "num_characters_out": Increment(len(output)),
+        },
+        firebase_user["idToken"],
+    )
+
+
+def update_image_record(input: str, response: ImagesResponse):
+    total_input_len = len(input)
+    total_output_len = sum(len(image.revised_prompt) for image in response.data)
+
+    firestore.collection(
+        "chat_records_for_images",
+    ).document(
+        user_id,
+    ).update(
+        {
+            "updated_at": SERVER_TIMESTAMP,
+            "num_chats": Increment(1),
+            "num_images": Increment(len(response.data)),
+            "num_characters_in": Increment(total_input_len),
+            "num_characters_out": Increment(total_output_len),
         },
         firebase_user["idToken"],
     )
