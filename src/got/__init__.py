@@ -69,7 +69,7 @@ def get_kwargs_for_chat_completions_create() -> dict:
             }
         case "togethercomputer/CodeLlama-34b-Instruct":
             return {
-                "max_tokens": 16384,
+                "max_tokens": 16384 // 2,
                 "stop": ["</s>"],
             }
         case _:
