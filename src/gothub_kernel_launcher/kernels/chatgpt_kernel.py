@@ -161,10 +161,56 @@ class ChatGptKernel(IPythonKernel):
 
         return result
 
-    def _gothub_use_model_chat(
-        self,
-        code,
-    ):
+    def _gothub_use_model_chat(self, code):
+        self._gothub_print_markdown(f"**{got.get_model_name()}:**")
+
+        self.chat_messages = self.chat_messages + [
+            {
+                "role": "user",
+                "content": code,
+            },
+        ]
+
+        response = got.get_client().chat.completions.create(
+            model=got.OPENAI_MODEL,
+            messages=self.chat_messages,
+            stream=True,
+            **got.get_kwargs_for_chat_completions_create(),
+        )
+
+        all_outputs = []
+        for res in response:
+            output = "".join(
+                [choice.delta.content or "" for choice in res.choices],
+            )
+
+            self._gothub_print(output)
+            all_outputs.append(output)
+
+        final_output = "".join(all_outputs)
+
+        self.chat_messages = self.chat_messages + [
+            {
+                "role": "assistant",
+                "content": final_output,
+            },
+        ]
+
+        firebase.firestore.collection(
+            "chat_records",
+        ).document(
+            firebase.user_id,
+        ).update(
+            {
+                "updated_at": FirestoreServerTimestamp,
+                "num_chats": FirestoreIncrement(1),
+                "num_characters_in": FirestoreIncrement(len(code)),
+                "num_characters_out": FirestoreIncrement(len(final_output)),
+            },
+            firebase.firebase_user["idToken"],
+        )
+
+    def _gothub_use_model_image(self, code):
         self._gothub_print_markdown(f"**{got.get_model_name()}:**")
 
         self.chat_messages = self.chat_messages + [
