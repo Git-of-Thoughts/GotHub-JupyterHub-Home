@@ -374,6 +374,9 @@ class ChatGptKernel(IPythonKernel):
                 r"^\s*with\s+(?:code-llama)(:|\s*$|\s+)": {
                     "model": "togethercomputer/CodeLlama-34b-Instruct",
                 },
+                r"^\s*with\s+(?:dall-e-)3(:|\s*$|\s+)": {
+                    "model": "dall-e-3",
+                },
             }
             for with_model_regex, model_dict in with_model_regex_to_model_dict.items():
                 if with_model_match := re.match(with_model_regex, code):
