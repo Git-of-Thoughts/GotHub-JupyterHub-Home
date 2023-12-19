@@ -267,7 +267,7 @@ class ChatGptKernel(IPythonKernel):
                 pass
 
             user_records = get_user_records_else_create()
-            if user_records["chat_record"]["num_chats"] >= 200:
+            if user_records["chat_record"]["num_chats"] >= 1000:
                 raise PleaseUpgradePlan(
                     "You have reached the usage limit for the free plan. "
                     "Please upgrade: "
