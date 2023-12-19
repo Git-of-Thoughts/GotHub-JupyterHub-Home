@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "🗣️ ChatGPT 3.5",
+    "display_name": "💬 ChatGPT 3.5",
     "language": "python",
     "metadata": {
         "debugger": true

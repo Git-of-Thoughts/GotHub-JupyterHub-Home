@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "📃 Python 3 (ipykernel)",
+    "display_name": "💻 Python 3 (ipykernel)",
     "language": "python",
     "metadata": {
         "debugger": true
