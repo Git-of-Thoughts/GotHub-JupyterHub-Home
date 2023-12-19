@@ -165,6 +165,9 @@ class ChatGptKernel(IPythonKernel):
         self,
         code,
     ):
+        # ! This is pretty important
+        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
         self._gothub_print_markdown(f"**{got.get_model_name()}:**")
 
         self.chat_messages = self.chat_messages + [
@@ -221,9 +224,6 @@ class ChatGptKernel(IPythonKernel):
         user_expressions=None,
         allow_stdin=False,
     ):
-        # ! This is pretty important
-        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
-
         try:
             if code.strip() == "":
                 # We could early return
