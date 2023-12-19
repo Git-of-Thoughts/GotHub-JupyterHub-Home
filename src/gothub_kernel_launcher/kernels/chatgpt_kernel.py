@@ -219,9 +219,8 @@ class ChatGptKernel(IPythonKernel):
             **got.get_kwargs_for_chat_completions_create(),
         )
 
-        for res in response:
-            res_pretty = str(res)
-            self._gothub_print_markdown(f"```json\n{res_pretty}\n```")
+        res_pretty = response.model_dump_json()
+        self._gothub_print_markdown(f"```json\n{res_pretty}\n```")
 
         # firebase.firestore.collection(
         #     "chat_records",
