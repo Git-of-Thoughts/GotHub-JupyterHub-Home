@@ -2,9 +2,7 @@ import json
 
 import firebase
 import requests
-from google.cloud.firestore import (
-    SERVER_TIMESTAMP as FirestoreServerTimestamp,
-)
+from google.cloud.firestore import SERVER_TIMESTAMP, Increment
 
 # Firebase configuration
 config = {
@@ -69,8 +67,8 @@ def get_user_records_else_create():
                 user_id,
             ).set(
                 {
-                    "created_at": FirestoreServerTimestamp,
-                    "updated_at": FirestoreServerTimestamp,
+                    "created_at": SERVER_TIMESTAMP,
+                    "updated_at": SERVER_TIMESTAMP,
                     "num_chats": 0,
                     "num_characters_in": 0,
                     "num_characters_out": 0,
@@ -107,8 +105,8 @@ def get_user_records_else_create():
                 user_id,
             ).set(
                 {
-                    "created_at": FirestoreServerTimestamp,
-                    "updated_at": FirestoreServerTimestamp,
+                    "created_at": SERVER_TIMESTAMP,
+                    "updated_at": SERVER_TIMESTAMP,
                     "num_chats": 0,
                     "num_images": 0,
                     "num_characters_in": 0,
@@ -121,3 +119,19 @@ def get_user_records_else_create():
         "chat_record": chat_record,
         "image_record": image_record,
     }
+
+
+def update_chat_record(input: str, output: str):
+    firestore.collection(
+        "chat_records",
+    ).document(
+        user_id,
+    ).update(
+        {
+            "updated_at": SERVER_TIMESTAMP,
+            "num_chats": Increment(1),
+            "num_characters_in": Increment(len(input)),
+            "num_characters_out": Increment(len(output)),
+        },
+        firebase_user["idToken"],
+    )
