@@ -239,7 +239,7 @@ class ChatGptKernel(IPythonKernel):
 
     def _gothub_use_model(self, code):
         # ! This is pretty important
-        # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+        got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
         match got.get_model_type():
             case "chat":
