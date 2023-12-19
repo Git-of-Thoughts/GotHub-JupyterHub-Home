@@ -1,0 +1,14 @@
+{
+    "argv": [
+        "/srv/conda/envs/notebook/bin/python",
+        "-m",
+        "gothub_kernel_launcher_dall_e_3",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "DALL·E 3",
+    "language": "python",
+    "metadata": {
+        "debugger": true
+    }
+}
