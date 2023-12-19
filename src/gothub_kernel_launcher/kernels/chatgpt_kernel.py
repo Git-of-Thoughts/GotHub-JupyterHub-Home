@@ -220,7 +220,7 @@ class ChatGptKernel(IPythonKernel):
         )
 
         for res in response:
-            res_pretty = json.dumps(res, indent=4)
+            res_pretty = str(res)
             self._gothub_print_markdown(f"```json\n{res_pretty}\n```")
 
         # firebase.firestore.collection(
