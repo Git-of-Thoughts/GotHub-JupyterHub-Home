@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "Code Llama (34B)",
+    "display_name": "💬 Code Llama (34B)",
     "language": "python",
     "metadata": {
         "debugger": true

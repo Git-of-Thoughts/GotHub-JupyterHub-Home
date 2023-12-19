@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "Mixtral 8x7B",
+    "display_name": "📄 Mixtral 8x7B",
     "language": "python",
     "metadata": {
         "debugger": true

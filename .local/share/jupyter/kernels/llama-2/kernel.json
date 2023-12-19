@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "Llama 2 (70B)",
+    "display_name": "📜 Llama 2 (70B)",
     "language": "python",
     "metadata": {
         "debugger": true
