@@ -346,13 +346,13 @@ class ChatGptKernel(IPythonKernel):
                     "model": "gpt-4",
                 },
                 r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)": {
-                    "model": "mistralai/Mixtral-8x7B-Instruct-v0.1"
+                    "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
                 },
                 r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)": {
-                    "model": "togethercomputer/llama-2-70b-chat"
+                    "model": "togethercomputer/llama-2-70b-chat",
                 },
                 r"^\s*with\s+(?:code-llama)(:|\s*$|\s+)": {
-                    "model": "togethercomputer/CodeLlama-34b-Instruct"
+                    "model": "togethercomputer/CodeLlama-34b-Instruct",
                 },
             }
             for with_model_regex, model_dict in with_model_regex_to_model_dict.items():
