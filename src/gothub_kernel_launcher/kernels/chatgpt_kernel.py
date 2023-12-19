@@ -156,7 +156,7 @@ class ChatGptKernel(IPythonKernel):
         )
 
         self.OPENAI_MODEL_TO_BE_SET = got.DEFAULT_OPENAI_MODEL
-        # ! You can't do this (probably due to async)
+        # ! You can't do this (probably due to async when running as code)
         # got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
 
         return result
