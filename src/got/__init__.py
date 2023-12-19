@@ -27,6 +27,8 @@ def get_client() -> OpenAI:
             return openai_client
         case "gpt-3.5-turbo":
             return openai_client
+        case "dall-e-3":
+            return openai_client
         case "mistralai/Mixtral-8x7B-Instruct-v0.1":
             return together_client
         case "togethercomputer/llama-2-70b-chat":
@@ -43,6 +45,8 @@ def get_model_name() -> str:
             return "ChatGPT 4"
         case "gpt-3.5-turbo":
             return "ChatGPT 3.5"
+        case "dall-e-3":
+            return "DALL·E 3"
         case "mistralai/Mixtral-8x7B-Instruct-v0.1":
             return "Mixtral 8x7B"
         case "togethercomputer/llama-2-70b-chat":
@@ -59,6 +63,8 @@ def get_model_type() -> str:
             return "chat"
         case "gpt-3.5-turbo":
             return "chat"
+        case "dall-e-3":
+            return "image"
         case "mistralai/Mixtral-8x7B-Instruct-v0.1":
             return "chat"
         case "togethercomputer/llama-2-70b-chat":
@@ -74,6 +80,8 @@ def get_kwargs_for_chat_completions_create() -> dict:
         case "gpt-4":
             return {}
         case "gpt-3.5-turbo":
+            return {}
+        case "dall-e-3":
             return {}
         case "mistralai/Mixtral-8x7B-Instruct-v0.1":
             return {
