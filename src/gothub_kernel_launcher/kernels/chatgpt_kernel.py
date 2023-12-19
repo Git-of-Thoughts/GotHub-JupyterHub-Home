@@ -237,9 +237,27 @@ class ChatGptKernel(IPythonKernel):
         #     firebase.firebase_user["idToken"],
         # )
 
-    def _gothub_use_model(self, code):
+    def _gothub_use_model(
+        self,
+        code: str,
+        *,
+        as_code: bool,
+        silent,
+        store_history,
+        user_expressions,
+        allow_stdin,
+    ):
         # ! This is pretty important
         got.OPENAI_MODEL = self.OPENAI_MODEL_TO_BE_SET
+
+        if as_code:
+            return super().do_execute(
+                code,
+                silent,
+                store_history,
+                user_expressions,
+                allow_stdin,
+            )
 
         match got.get_model_type():
             case "chat":
@@ -248,6 +266,14 @@ class ChatGptKernel(IPythonKernel):
                 self._gothub_use_model_image(code)
             case _:
                 raise NotImplementedError
+
+        return super().do_execute(
+            "None",
+            silent,
+            store_history,
+            user_expressions,
+            allow_stdin,
+        )
 
     def do_execute(
         self,
@@ -340,13 +366,13 @@ class ChatGptKernel(IPythonKernel):
             as_code_regex = r"^\s*as\s+(?:code|py|python)(:|\s*$|\s+)"
             if as_code_match := re.match(as_code_regex, code):
                 code = code[as_code_match.end(1) :]
-
-                return super().do_execute(
+                return self._gothub_use_model(
                     code,
-                    silent,
-                    store_history,
-                    user_expressions,
-                    allow_stdin,
+                    as_code=True,
+                    silent=silent,
+                    store_history=store_history,
+                    user_expressions=user_expressions,
+                    allow_stdin=allow_stdin,
                 )
 
             as_new_chat_regex = r"^\s*as\s+new\s+chat(:|\s*$|\s+)"
@@ -397,7 +423,14 @@ class ChatGptKernel(IPythonKernel):
                         allow_stdin=allow_stdin,
                     )
 
-            self._gothub_use_model(code)
+            return self._gothub_use_model(
+                code,
+                as_code=False,
+                silent=silent,
+                store_history=store_history,
+                user_expressions=user_expressions,
+                allow_stdin=allow_stdin,
+            )
 
         except Exception as e:
             return super().do_execute(
@@ -407,14 +440,6 @@ class ChatGptKernel(IPythonKernel):
                 user_expressions,
                 allow_stdin,
             )
-
-        return super().do_execute(
-            "None",
-            silent,
-            store_history,
-            user_expressions,
-            allow_stdin,
-        )
 
         return {
             "status": "ok",
