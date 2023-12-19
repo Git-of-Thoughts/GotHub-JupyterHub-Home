@@ -280,25 +280,29 @@ class ChatGptKernel(IPythonKernel):
 
                 return result
 
-            with_model_regex_to_model = {
-                r"^\s*with\s+(?:gpt|gpt-)3.5(:|\s*$|\s+)": "gpt-3.5-turbo",
-                r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)": "gpt-4",
-                r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)": (
-                    "mistralai/Mixtral-8x7B-Instruct-v0.1"
-                ),
-                r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)": (
-                    "togethercomputer/llama-2-70b-chat"
-                ),
-                r"^\s*with\s+(?:code-llama)(:|\s*$|\s+)": (
-                    "togethercomputer/CodeLlama-34b-Instruct"
-                ),
+            with_model_regex_to_model_dict = {
+                r"^\s*with\s+(?:gpt|gpt-)3.5(:|\s*$|\s+)": {
+                    "model": "gpt-3.5-turbo",
+                },
+                r"^\s*with\s+(?:gpt|gpt-)4(:|\s*$|\s+)": {
+                    "model": "gpt-4",
+                },
+                r"^\s*with\s+(?:mixtral)(:|\s*$|\s+)": {
+                    "model": "mistralai/Mixtral-8x7B-Instruct-v0.1"
+                },
+                r"^\s*with\s+(?:llama|llama-)2(:|\s*$|\s+)": {
+                    "model": "togethercomputer/llama-2-70b-chat"
+                },
+                r"^\s*with\s+(?:code-llama)(:|\s*$|\s+)": {
+                    "model": "togethercomputer/CodeLlama-34b-Instruct"
+                },
             }
-            for with_model_regex, model in with_model_regex_to_model.items():
+            for with_model_regex, model_dict in with_model_regex_to_model_dict.items():
                 if with_model_match := re.match(with_model_regex, code):
                     return self._gothub_do_execute_with_model(
                         code,
                         with_model_match,
-                        model,
+                        model_dict["model"],
                         silent=silent,
                         store_history=store_history,
                         user_expressions=user_expressions,
