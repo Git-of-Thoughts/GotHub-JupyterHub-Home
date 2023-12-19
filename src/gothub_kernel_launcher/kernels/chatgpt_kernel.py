@@ -233,10 +233,7 @@ class ChatGptKernel(IPythonKernel):
         #     firebase.firebase_user["idToken"],
         # )
 
-    def _gothub_use_model(
-        self,
-        code,
-    ):
+    def _gothub_use_model(self, code):
         match got.get_model_type():
             case "chat":
                 self._gothub_use_model_chat(code)
