@@ -23,6 +23,7 @@ from .configs import (
 from .errors import PleaseUpgradePlan
 from .super_king import super_king_debug
 from .utils import firebase
+from .utils.firebase import get_user_records_else_create
 
 # Model
 DEFAULT_SYSTEM_PROMPT = """\
@@ -291,46 +292,13 @@ class ChatGptKernel(IPythonKernel):
                 # We could early return
                 pass
 
-            try:
-                chat_record = (
-                    firebase.firestore.collection(
-                        "chat_records",
-                    )
-                    .document(
-                        firebase.user_id,
-                    )
-                    .get(
-                        token=firebase.firebase_user["idToken"],
-                    )
+            user_records = get_user_records_else_create()
+            if user_records["chat_record"]["num_chats"] >= 200:
+                raise PleaseUpgradePlan(
+                    "You have reached the usage limit for the free plan. "
+                    "Please upgrade: "
+                    "https://gothub-gpt.webflow.io/pricing"
                 )
-
-                if chat_record["num_chats"] >= 1000:
-                    raise PleaseUpgradePlan(
-                        "You have reached the usage limit for the free plan. "
-                        "Please upgrade: "
-                        "https://gothub-gpt.webflow.io/pricing"
-                    )
-
-            except requests.HTTPError as e:
-                error_json = json.loads(e.strerror)
-                if (
-                    error_json["error"]["code"] == 404
-                    and error_json["error"]["status"] == "NOT_FOUND"
-                ):
-                    firebase.firestore.collection(
-                        "chat_records",
-                    ).document(
-                        firebase.user_id,
-                    ).set(
-                        {
-                            "created_at": FirestoreServerTimestamp,
-                            "updated_at": FirestoreServerTimestamp,
-                            "num_chats": 0,
-                            "num_characters_in": 0,
-                            "num_characters_out": 0,
-                        },
-                        token=firebase.firebase_user["idToken"],
-                    )
 
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
