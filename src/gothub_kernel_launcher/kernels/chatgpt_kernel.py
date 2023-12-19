@@ -312,14 +312,16 @@ class ChatGptKernel(IPythonKernel):
                     )
 
             except requests.HTTPError as e:
-                chat_record = (
+                error_json = json.loads(e.strerror)
+                if (
+                    error_json["error"]["code"] == 404
+                    and error_json["error"]["status"] == "NOT_FOUND"
+                ):
                     firebase.firestore.collection(
                         "chat_records",
-                    )
-                    .document(
+                    ).document(
                         firebase.user_id,
-                    )
-                    .set(
+                    ).set(
                         {
                             "created_at": FirestoreServerTimestamp,
                             "updated_at": FirestoreServerTimestamp,
@@ -329,7 +331,6 @@ class ChatGptKernel(IPythonKernel):
                         },
                         token=firebase.firebase_user["idToken"],
                     )
-                )
 
             print_account_regex = r"^\s*print\s+account\s*$"
             if re.match(print_account_regex, code):
