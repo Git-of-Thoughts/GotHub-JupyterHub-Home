@@ -212,6 +212,7 @@ class ChatGptKernel(IPythonKernel):
 
     def _gothub_use_model_image(self, code):
         self._gothub_print_markdown(f"**{got.get_model_name()}:**")
+        self._gothub_print_markdown("Generating image...")
 
         response = got.get_client().images.generate(
             model=got.OPENAI_MODEL,
@@ -219,8 +220,10 @@ class ChatGptKernel(IPythonKernel):
             **got.get_kwargs_for_chat_completions_create(),
         )
 
-        res_pretty = response.model_dump_json()
-        self._gothub_print_markdown(f"```json\n{res_pretty}\n```")
+        for image in response.data:
+            url = image.url
+            caption = image.revised_prompt
+            self._gothub_print_markdown(f"![{caption}]({url})")
 
         # firebase.firestore.collection(
         #     "chat_records",
