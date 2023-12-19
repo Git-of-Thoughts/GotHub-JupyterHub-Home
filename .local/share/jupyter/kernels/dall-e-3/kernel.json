@@ -6,7 +6,7 @@
         "-f",
         "{connection_file}"
     ],
-    "display_name": "DALL·E 3",
+    "display_name": "[Image] DALL·E 3",
     "language": "python",
     "metadata": {
         "debugger": true
