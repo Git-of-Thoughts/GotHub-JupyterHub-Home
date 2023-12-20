@@ -85,7 +85,7 @@ def get_model_type() -> str:
             "stability-ai/sdxl"
             ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
         ):
-            return "image"
+            return "r8_image"
 
     raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
