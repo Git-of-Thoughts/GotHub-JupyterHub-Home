@@ -382,6 +382,12 @@ class ChatGptKernel(IPythonKernel):
                 r"^\s*with\s+(?:dall-e-)3(:|\s*$|\s+)": {
                     "model": "dall-e-3",
                 },
+                r"^\s*with\s+(?:sdxl)(:|\s*$|\s+)": {
+                    "model": (
+                        "stability-ai/sdxl"
+                        ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
+                    ),
+                },
             }
             for with_model_regex, model_dict in with_model_regex_to_model_dict.items():
                 if with_model_match := re.match(with_model_regex, code):
