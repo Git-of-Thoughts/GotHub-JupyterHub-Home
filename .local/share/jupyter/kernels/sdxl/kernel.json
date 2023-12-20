@@ -2,7 +2,7 @@
     "argv": [
         "/srv/conda/envs/notebook/bin/python",
         "-m",
-        "gothub_kernel_launcher_mixtral",
+        "gothub_kernel_launcher_sdxl",
         "-f",
         "{connection_file}"
     ],
