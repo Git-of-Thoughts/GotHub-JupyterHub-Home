@@ -217,7 +217,13 @@ class ChatGptKernel(IPythonKernel):
             self._gothub_print_markdown(f"![{description}]({url})")
             self._gothub_print_markdown(f"> {description}")
 
-        update_image_record(code, response)
+        update_image_record(
+            code,
+            num_images=len(response.data),
+            total_output_len=sum(
+                [len(image.revised_prompt) for image in response.data],
+            ),
+        )
 
     def _gothub_use_model_r8_image(self, code):
         self._gothub_print_markdown(f"**{got.get_model_name()}:**")
@@ -225,19 +231,25 @@ class ChatGptKernel(IPythonKernel):
 
         response = got.get_client().run(
             got.OPENAI_MODEL,
-            input={"prompt": code},
+            input={
+                "prompt": code,
+            },
             **got.get_kwargs_for_chat_completions_create(),
         )
 
-        self._gothub_print_markdown(f"{response}")
+        for image in response:
+            url = image
+            description = code
+            self._gothub_print_markdown(f"![{description}]({url})")
+            self._gothub_print_markdown(f"> {description}")
 
-        # for image in response.data:
-        #     url = image.url
-        #     description = image.revised_prompt
-        #     self._gothub_print_markdown(f"![{description}]({url})")
-        #     self._gothub_print_markdown(f"> {description}")
-
-        # update_image_record(code, response)
+        update_image_record(
+            code,
+            num_images=len(response),
+            total_output_len=sum(
+                [len(code) for image in response],
+            ),
+        )
 
     def _gothub_do_execute(
         self,

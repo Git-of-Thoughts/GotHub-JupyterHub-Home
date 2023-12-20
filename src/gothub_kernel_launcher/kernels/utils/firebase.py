@@ -138,9 +138,12 @@ def update_chat_record(input: str, output: str):
     )
 
 
-def update_image_record(input: str, response: ImagesResponse):
+def update_image_record(
+    input: str,
+    num_images: int,
+    total_output_len: int,
+):
     total_input_len = len(input)
-    total_output_len = sum(len(image.revised_prompt) for image in response.data)
 
     firestore.collection(
         "chat_records_for_images",
@@ -150,7 +153,7 @@ def update_image_record(input: str, response: ImagesResponse):
         {
             "updated_at": SERVER_TIMESTAMP,
             "num_chats": Increment(1),
-            "num_images": Increment(len(response.data)),
+            "num_images": Increment(num_images),
             "num_characters_in": Increment(total_input_len),
             "num_characters_out": Increment(total_output_len),
         },
