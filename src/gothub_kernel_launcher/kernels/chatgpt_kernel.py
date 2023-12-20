@@ -229,7 +229,7 @@ class ChatGptKernel(IPythonKernel):
             **got.get_kwargs_for_chat_completions_create(),
         )
 
-        self.__gothub_print_markdown(f"{response}")
+        self._gothub_print_markdown(f"{response}")
 
         # for image in response.data:
         #     url = image.url
