@@ -40,8 +40,8 @@ def get_client():
             ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
         ):
             return replicate_client
-        case _:
-            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+
+    raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
 def get_model_name() -> str:
@@ -63,8 +63,8 @@ def get_model_name() -> str:
             ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
         ):
             return "Stable Diffusion XL"
-        case _:
-            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+
+    raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
 def get_model_type() -> str:
@@ -86,8 +86,8 @@ def get_model_type() -> str:
             ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
         ):
             return "image"
-        case _:
-            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+
+    raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
 def get_kwargs_for_chat_completions_create() -> dict:
@@ -111,8 +111,13 @@ def get_kwargs_for_chat_completions_create() -> dict:
                 "max_tokens": 16384 // 2,
                 "stop": ["</s>"],
             }
-        case _:
-            raise ValueError(f"Unknown model: {OPENAI_MODEL}")
+        case (
+            "stability-ai/sdxl"
+            ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
+        ):
+            return {}
+
+    raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
 
 def _ask(

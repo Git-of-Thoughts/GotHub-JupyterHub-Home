@@ -219,6 +219,26 @@ class ChatGptKernel(IPythonKernel):
 
         update_image_record(code, response)
 
+    def _gothub_use_model_r8_image(self, code):
+        self._gothub_print_markdown(f"**{got.get_model_name()}:**")
+        self._gothub_print_markdown("Generating image...")
+
+        response = got.get_client().run(
+            got.OPENAI_MODEL,
+            input={"prompt": code},
+            **got.get_kwargs_for_chat_completions_create(),
+        )
+
+        self.__gothub_print_markdown(f"{response}")
+
+        # for image in response.data:
+        #     url = image.url
+        #     description = image.revised_prompt
+        #     self._gothub_print_markdown(f"![{description}]({url})")
+        #     self._gothub_print_markdown(f"> {description}")
+
+        # update_image_record(code, response)
+
     def _gothub_do_execute(
         self,
         code: str,
@@ -246,6 +266,8 @@ class ChatGptKernel(IPythonKernel):
                 self._gothub_use_model_chat(code)
             case "image":
                 self._gothub_use_model_image(code)
+            case "r8_image":
+                self._gothub_use_model_r8_image(code)
             case _:
                 raise NotImplementedError
 
