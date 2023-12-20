@@ -1,5 +1,4 @@
-import sys
-
+import replicate
 from google.cloud.firestore import (
     SERVER_TIMESTAMP as FirestoreServerTimestamp,
 )
@@ -19,9 +18,10 @@ OPENAI_MODEL = DEFAULT_OPENAI_MODEL
 
 openai_client: OpenAI = None
 together_client: OpenAI = None
+replicate_client: replicate.Client = None
 
 
-def get_client() -> OpenAI:
+def get_client():
     match OPENAI_MODEL:
         case "gpt-4":
             return openai_client
@@ -35,6 +35,11 @@ def get_client() -> OpenAI:
             return together_client
         case "togethercomputer/CodeLlama-34b-Instruct":
             return together_client
+        case (
+            "stability-ai/sdxl"
+            ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
+        ):
+            return replicate_client
         case _:
             raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
@@ -53,6 +58,11 @@ def get_model_name() -> str:
             return "Llama 2 (70B)"
         case "togethercomputer/CodeLlama-34b-Instruct":
             return "Code Llama (34B)"
+        case (
+            "stability-ai/sdxl"
+            ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
+        ):
+            return "Stable Diffusion XL"
         case _:
             raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 
@@ -71,6 +81,11 @@ def get_model_type() -> str:
             return "chat"
         case "togethercomputer/CodeLlama-34b-Instruct":
             return "chat"
+        case (
+            "stability-ai/sdxl"
+            ":39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b"
+        ):
+            return "image"
         case _:
             raise ValueError(f"Unknown model: {OPENAI_MODEL}")
 

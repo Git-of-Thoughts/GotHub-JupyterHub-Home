@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import got
+import replicate
 import requests
 from ipykernel.ipkernel import IPythonKernel
 from openai import OpenAI
@@ -85,6 +86,9 @@ class ChatGptKernel(IPythonKernel):
         got.together_client = OpenAI(
             api_key=my_firebase_password_json["TOGETHER_API_KEY"],
             base_url="https://api.together.xyz/v1",
+        )
+        got.replicate_client = replicate.Client(
+            api_key=my_firebase_password_json["REPLICATE_API_KEY"],
         )
 
         firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
