@@ -88,7 +88,7 @@ class ChatGptKernel(IPythonKernel):
             base_url="https://api.together.xyz/v1",
         )
         got.replicate_client = replicate.Client(
-            api_key=my_firebase_password_json["REPLICATE_API_TOKEN"],
+            api_token=my_firebase_password_json["REPLICATE_API_TOKEN"],
         )
 
         firebase.firebase_user = firebase.auth.sign_in_with_email_and_password(
