@@ -8,6 +8,8 @@ import got
 import replicate
 import requests
 from ipykernel.ipkernel import IPythonKernel
+from IPython import get_ipython
+from IPython.display import Markdown, clear_output, display
 from openai import OpenAI
 
 from .configs import (
@@ -191,6 +193,7 @@ class ChatGptKernel(IPythonKernel):
             all_outputs.append(output)
 
         final_output = "".join(all_outputs)
+        # get_ipython().set_next_input(final_output)
 
         self.chat_messages = self.chat_messages + [
             {
